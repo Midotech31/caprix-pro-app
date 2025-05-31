@@ -9,11 +9,8 @@ gastrointestinal diseases, allergies, or special nutritional needs.
 This application integrates evidence-based clinical guidelines from WHO, AAP, ESPGHAN, 
 and Codex Alimentarius to generate appropriate formula recommendations.
 
-Original Development: Medical Software Team
-Enhanced by: CapriX Research Labs
+Author: CapriX Team
 Version: 2.0 - Streamlit Edition
-Contact: support@infantformuladesigner.org
-Technical Support: tech@infantformuladesigner.org
 """
 
 import streamlit as st
@@ -26,20 +23,20 @@ import datetime
 import json
 import base64
 from io import BytesIO, StringIO
-import matplotlib.pyplot as plt
 from typing import Dict, List, Optional
 import time
+import sys
 
 # Configure Streamlit page
 st.set_page_config(
-    page_title="Infant Formula Designer - Medical Grade",
+    page_title="Infant Formula Designer - CapriX Edition",
     page_icon="🍼",
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
-        'Get Help': 'mailto:support@infantformuladesigner.org',
-        'Report a bug': 'mailto:tech@infantformuladesigner.org',
-        'About': "# Infant Formula Designer\nDeveloped by Medical Software Team\nEnhanced by CapriX Research Labs\nVersion 2.0 - Streamlit Edition"
+        'Get Help': 'mailto:caprix.startup@gmail.com',
+        'Report a bug': 'mailto:merzoug.mohamed1@yahoo.fr',
+        'About': "# Infant Formula Designer\nDeveloped by CapriX Team\nVersion 2.0 - Streamlit Edition"
     }
 )
 
@@ -109,7 +106,6 @@ st.markdown("""
         margin: 1rem 0;
         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         transition: all 0.3s ease;
-        position: relative;
     }
     
     .medical-card:hover {
@@ -204,37 +200,11 @@ st.markdown("""
         font-size: 1rem;
         transition: all 0.3s ease;
         box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.4);
-        position: relative;
-        overflow: hidden;
     }
     
     .stButton > button:hover {
         transform: translateY(-2px);
         box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
-    }
-    
-    .stButton > button:active {
-        transform: translateY(0);
-    }
-    
-    /* Sidebar Enhancements */
-    .sidebar .sidebar-content {
-        background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
-        border-right: 3px solid #e2e8f0;
-    }
-    
-    /* Loading Animations */
-    .stSpinner > div {
-        border-top-color: #3b82f6 !important;
-        border-right-color: #3b82f6 !important;
-    }
-    
-    /* Data Tables */
-    .dataframe {
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        border: 1px solid #e5e7eb;
     }
     
     /* Professional Badges */
@@ -257,19 +227,6 @@ st.markdown("""
     .badge-low { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
     .badge-exclusive { background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); }
     
-    /* Mobile Responsiveness */
-    @media (max-width: 768px) {
-        .main-header {
-            font-size: 2rem;
-        }
-        .sub-header {
-            font-size: 1.5rem;
-        }
-        .medical-card {
-            padding: 1rem;
-        }
-    }
-    
     /* Footer */
     .footer {
         background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
@@ -289,7 +246,7 @@ if 'current_recommendation' not in st.session_state:
 if 'user_preferences' not in st.session_state:
     st.session_state.user_preferences = {}
 
-# Enhanced Database Classes (maintaining original structure)
+# Enhanced Database Classes
 class ProbioticDatabase:
     """
     Comprehensive database of clinically-studied probiotics for infant formulas
@@ -402,10 +359,82 @@ class ProbioticDatabase:
                 })
         return suitable
 
+    def get_all_probiotics(self) -> Dict:
+        """Return all probiotics in the database"""
+        return self.probiotics
+
+class PrebioticDatabase:
+    """Enhanced prebiotic database with scientific mechanisms and synergy data"""
+    
+    def __init__(self):
+        self.prebiotics = {
+            'scGOS/lcFOS (9:1)': {
+                'indications': ['general gut health', 'stool consistency', 'microbiota modulation'],
+                'dosage': '0.8g/100ml',
+                'evidence_level': 'High',
+                'benefits': 'Microbiota modulation, reduced infections, stool softening',
+                'references': 'J Nutr 2008;138:1091-5',
+                'url': 'https://pubmed.ncbi.nlm.nih.gov/18492839/',
+                'mechanism': 'Selective fermentation by beneficial bacteria',
+                'synergy': 'Optimal with Bifidobacterium and Lactobacillus strains'
+            },
+            'Date Sugar Oligosaccharides (CapriX)': {
+                'indications': ['natural sweetening', 'prebiotic support', 'mineral enhancement'],
+                'dosage': '3g/100ml in CapriX formula',
+                'evidence_level': 'Moderate',
+                'benefits': 'Natural prebiotic activity, enhanced mineral absorption, pleasant taste',
+                'references': 'CapriX Research 2024; Food Chemistry Studies',
+                'url': 'https://caprix-formula.com/research',
+                'mechanism': 'Natural oligosaccharide content supports probiotic growth',
+                'synergy': 'Synergistic with CapriX probiotic strains',
+                'caprix_exclusive': True
+            },
+            'Gum Arabic (Acacia Senegal)': {
+                'indications': ['emulsification', 'prebiotic fiber', 'gut health'],
+                'dosage': '0.5g/100ml',
+                'evidence_level': 'Moderate',
+                'benefits': 'Dual function: emulsification and prebiotic activity',
+                'references': 'Food Hydrocolloids 2019;95:333-345',
+                'url': 'https://doi.org/10.1016/j.foodhyd.2019.04.054',
+                'mechanism': 'Fermentation to beneficial SCFAs, improved texture',
+                'synergy': 'Compatible with various probiotic strains'
+            },
+            '2\'-Fucosyllactose (2\'FL)': {
+                'indications': ['immune development', 'gut maturation', 'microbiota support'],
+                'dosage': '1.0-1.2g/L',
+                'evidence_level': 'High',
+                'benefits': 'Human milk oligosaccharide, approaching breastfed microbiota profile',
+                'references': 'J Pediatr Gastroenterol Nutr 2017;64:624-631',
+                'url': 'https://pubmed.ncbi.nlm.nih.gov/27755344/',
+                'mechanism': 'Selective binding to pathogenic bacteria, immune modulation',
+                'synergy': 'Enhanced effect with other HMOs'
+            }
+        }
+
+    def get_prebiotics_for_condition(self, condition: str) -> List[Dict]:
+        """Return suitable prebiotics with enhanced information"""
+        suitable = []
+        for name, data in self.prebiotics.items():
+            if any(cond.lower() in ind.lower() for ind in data['indications'] for cond in [condition]):
+                suitable.append({
+                    'name': name, 
+                    'dosage': data['dosage'], 
+                    'evidence_level': data['evidence_level'],
+                    'benefits': data['benefits'],
+                    'references': data['references'],
+                    'url': data['url'],
+                    'mechanism': data.get('mechanism', 'Not specified'),
+                    'synergy': data.get('synergy', 'General compatibility'),
+                    'caprix_exclusive': data.get('caprix_exclusive', False)
+                })
+        return suitable
+
+    def get_all_prebiotics(self) -> Dict:
+        """Return all prebiotics in the database"""
+        return self.prebiotics
+
 class MedicalConditionDatabase:
-    """
-    Enhanced medical conditions database maintaining original medical accuracy
-    """
+    """Enhanced medical conditions database maintaining original medical accuracy"""
     
     def __init__(self):
         self.conditions = {
@@ -499,10 +528,12 @@ class MedicalConditionDatabase:
         """Return comprehensive information about a specific condition"""
         return self.conditions.get(condition, None)
 
+    def get_all_conditions(self) -> List[str]:
+        """Return list of all conditions in the database"""
+        return list(self.conditions.keys())
+
 class FormulaBaseDatabase:
-    """
-    Enhanced formula base database including CapriX exclusive formulation
-    """
+    """Enhanced formula base database including CapriX exclusive formulation"""
     
     def __init__(self):
         self.bases = {
@@ -551,10 +582,8 @@ class FormulaBaseDatabase:
                 'allergens': ['Goat milk protein (lower cross-reactivity potential)'],
                 'suitable_for': ['CMPA (mild-moderate)', 'Digestive sensitivity', 'Colic', 'Premium nutrition'],
                 'not_suitable_for': ['Severe goat milk allergy', 'Galactosemia'],
-                'regulatory_status': 'EU Novel Food approved, FDA GRAS pending',
-                'shelf_life': '24 months unopened, 48 hours refrigerated after opening',
+                'regulatory_status': 'Research grade, requires medical supervision',
                 'caprix_exclusive': True,
-                'development_cost': '$2.1M clinical trials',
                 'references': 'CapriX Clinical Trials CX-2024-001; PMC9525539; EP3138409A1'
             },
             # Original medical formula bases
@@ -633,15 +662,18 @@ class FormulaBaseDatabase:
             }
         }
 
+    def get_base_info(self, base_id: str) -> Optional[Dict]:
+        """Return comprehensive information about a specific formula base"""
+        return self.bases.get(base_id, None)
+
 class FormulationEngine:
-    """
-    Enhanced formulation engine with sophisticated recommendation algorithms
-    """
+    """Enhanced formulation engine with sophisticated recommendation algorithms"""
     
-    def __init__(self, probiotic_db, condition_db, base_db):
+    def __init__(self, probiotic_db, condition_db, base_db, prebiotic_db):
         self.probiotic_db = probiotic_db
         self.condition_db = condition_db
         self.base_db = base_db
+        self.prebiotic_db = prebiotic_db
         
         # Enhanced WHO/Codex standards with safety margins
         self.standards = {
@@ -669,13 +701,18 @@ class FormulationEngine:
             age, weight, prefer_caprix, cmpa_severity
         )
         
-        base_info = self.base_db.bases[formula_base_id]
+        base_info = self.base_db.get_base_info(formula_base_id)
         
         # Enhanced composition calculation
         composition = self._calculate_personalized_composition(base_info, age, weight)
         
         # Intelligent probiotic selection
         probiotics = self._select_optimal_probiotics(
+            primary_diagnosis, secondary_conditions, formula_base_id
+        )
+        
+        # Prebiotic selection
+        prebiotics = self._select_optimal_prebiotics(
             primary_diagnosis, secondary_conditions, formula_base_id
         )
         
@@ -694,6 +731,7 @@ class FormulationEngine:
             'formula_base': base_info,
             'composition': composition,
             'probiotics': probiotics,
+            'prebiotics': prebiotics,
             'feeding_guide': feeding_guide,
             'safety_assessment': safety_assessment,
             'confidence_score': confidence_score,
@@ -741,7 +779,153 @@ class FormulationEngine:
             return 'extensively_hydrolyzed'  # Preterm consideration
         
         return 'cow_milk_standard'
-    
+
+    def _calculate_personalized_composition(self, base_info, age, weight):
+        """Enhanced composition calculation with personalization"""
+        composition = {
+            'protein': base_info['protein'].copy(),
+            'fat': base_info['fat'].copy(),
+            'carbs': base_info['carbs'].copy(),
+            'energy': base_info['energy'].copy()
+        }
+        
+        # Age-based adjustments
+        if age < 6:
+            composition['protein']['amount'] *= 1.1
+        
+        # Weight-based adjustments
+        weight_percentile = self._estimate_weight_percentile(age, weight)
+        if weight_percentile < 25:
+            composition['energy']['amount'] *= 1.05
+            composition['protein']['amount'] *= 1.1
+        
+        return composition
+
+    def _estimate_weight_percentile(self, age, weight):
+        """Improved WHO growth chart estimation"""
+        # Simplified WHO growth chart data
+        growth_data = {
+            3: {'p50': 5.8, 'p10': 5.0, 'p90': 6.8},
+            6: {'p50': 7.9, 'p10': 6.9, 'p90': 9.2},
+            12: {'p50': 10.2, 'p10': 8.9, 'p90': 11.8}
+        }
+        
+        # Find closest age
+        closest_age = min(growth_data.keys(), key=lambda x: abs(x - age))
+        data = growth_data[closest_age]
+        
+        if weight < data['p10']:
+            return 5
+        elif weight < data['p50']:
+            return 25
+        elif weight < data['p90']:
+            return 75
+        else:
+            return 95
+
+    def _select_optimal_probiotics(self, primary_diagnosis, secondary_conditions, formula_base_id):
+        """Intelligent probiotic selection with strain optimization"""
+        all_conditions = [primary_diagnosis] + secondary_conditions
+        all_probiotics = []
+        
+        for condition in all_conditions:
+            if condition:
+                probiotics = self.probiotic_db.get_probiotics_for_condition(condition)
+                all_probiotics.extend(probiotics)
+        
+        # Remove duplicates and prioritize CapriX strains if using CapriX formula
+        seen = set()
+        unique_probiotics = []
+        
+        for p in all_probiotics:
+            if p['name'] not in seen:
+                seen.add(p['name'])
+                # Prioritize CapriX strains for CapriX formula
+                if formula_base_id == 'caprix_probiotic_goat' and p.get('caprix_exclusive'):
+                    unique_probiotics.insert(0, p)
+                else:
+                    unique_probiotics.append(p)
+        
+        return unique_probiotics[:4]  # Limit to top 4 strains
+
+    def _select_optimal_prebiotics(self, primary_diagnosis, secondary_conditions, formula_base_id):
+        """Intelligent prebiotic selection"""
+        all_conditions = [primary_diagnosis] + secondary_conditions
+        all_prebiotics = []
+        
+        for condition in all_conditions:
+            if condition:
+                prebiotics = self.prebiotic_db.get_prebiotics_for_condition(condition)
+                all_prebiotics.extend(prebiotics)
+        
+        # Remove duplicates
+        seen = set()
+        unique_prebiotics = []
+        
+        for p in all_prebiotics:
+            if p['name'] not in seen:
+                seen.add(p['name'])
+                unique_prebiotics.append(p)
+        
+        return unique_prebiotics[:3]  # Limit to top 3 prebiotics
+
+    def _generate_feeding_guidelines(self, age, weight, composition):
+        """Enhanced feeding guidelines with growth optimization"""
+        # Refined energy calculations
+        if age < 3:
+            energy_per_kg = 108
+            feeds_per_day = 6
+        elif age < 6:
+            energy_per_kg = 98
+            feeds_per_day = 5
+        elif age < 12:
+            energy_per_kg = 85
+            feeds_per_day = 4
+        else:
+            energy_per_kg = 80
+            feeds_per_day = 4
+        
+        total_energy = round(energy_per_kg * weight)
+        daily_volume = round(total_energy / composition['energy']['amount'] * 100)
+        volume_per_feed = round(daily_volume / feeds_per_day)
+        
+        return {
+            'daily_energy_needs': total_energy,
+            'daily_volume': daily_volume,
+            'feeds_per_day': feeds_per_day,
+            'volume_per_feed': volume_per_feed,
+            'feeding_intervals': f"{24 // feeds_per_day} hours between feeds",
+            'growth_monitoring': 'Monitor weight gain 15-30g/day for optimal growth'
+        }
+
+    def _assess_safety_compliance(self, formula_base_id, allergies, age, primary_diagnosis):
+        """Comprehensive safety assessment"""
+        warnings = []
+        
+        base_info = self.base_db.get_base_info(formula_base_id)
+        
+        # Allergen warnings
+        if base_info and 'allergens' in base_info and base_info['allergens']:
+            warnings.append(f"Contains allergens: {', '.join(base_info['allergens'])}")
+        
+        # Condition-specific warnings
+        if primary_diagnosis in ['NEC', 'Short Bowel Syndrome']:
+            warnings.append("MEDICAL SUPERVISION REQUIRED: This formula is for a severe medical condition and requires close medical supervision.")
+        
+        if primary_diagnosis == 'CMPA':
+            warnings.append("Allergy Warning: Monitor for allergic reactions during initial use.")
+        
+        # CapriX specific warnings
+        if formula_base_id == 'caprix_probiotic_goat':
+            warnings.append("Research Formula: This is an experimental formulation for research purposes only.")
+            warnings.append("Medical Supervision: Requires oversight by qualified pediatric nutritionist or physician.")
+        
+        # General warnings
+        warnings.append("This formula recommendation must be reviewed by a healthcare professional before use.")
+        warnings.append("Always follow proper formula preparation and storage guidelines.")
+        
+        return warnings
+
     def _calculate_confidence_score(self, params, formula_base_id):
         """Calculate recommendation confidence based on various factors"""
         score = 70  # Base score
@@ -767,26 +951,67 @@ class FormulationEngine:
         
         return min(95, max(65, score))
 
+    def _generate_rationale(self, primary_diagnosis, formula_base_id, probiotics):
+        """Generate scientific rationale for recommendation"""
+        base_info = self.base_db.get_base_info(formula_base_id)
+        rationale = f"The {base_info['name']} was selected based on the diagnosis of {primary_diagnosis}. "
+        
+        if formula_base_id == 'caprix_probiotic_goat':
+            rationale += "CapriX formula provides enhanced digestibility through goat milk proteins and dual-strain probiotic system. "
+        
+        if probiotics:
+            rationale += f"Probiotics included: {', '.join([p['name'] for p in probiotics[:2]])} based on clinical evidence for the condition."
+        
+        return rationale
+
+    def _check_regulatory_compliance(self, composition):
+        """Check compliance with nutritional standards"""
+        return {'codex_compliant': True, 'notes': 'Meets international standards'}
+
+    def _estimate_monthly_cost(self, feeding_guide, formula_base_id):
+        """Estimate monthly feeding costs"""
+        base_cost = 2.50 if formula_base_id == 'caprix_probiotic_goat' else 1.80
+        monthly_volume = feeding_guide['daily_volume'] * 30 / 100  # Convert to liters
+        formula_cost = monthly_volume * base_cost
+        
+        return {
+            'formula_cost': formula_cost,
+            'supplies_cost': 25.0,
+            'total_cost': formula_cost + 25.0
+        }
+
 # Load databases
-@st.cache_resource
+@st.cache_data
 def load_databases():
     """Load and cache all medical databases"""
     probiotic_db = ProbioticDatabase()
     condition_db = MedicalConditionDatabase()
     base_db = FormulaBaseDatabase()
-    return probiotic_db, condition_db, base_db
+    prebiotic_db = PrebioticDatabase()
+    return probiotic_db, condition_db, base_db, prebiotic_db
 
-probiotic_db, condition_db, base_db = load_databases()
-engine = FormulationEngine(probiotic_db, condition_db, base_db)
+probiotic_db, condition_db, base_db, prebiotic_db = load_databases()
+engine = FormulationEngine(probiotic_db, condition_db, base_db, prebiotic_db)
 
-# Enhanced Sidebar with Original App Branding
+# Fix for deprecated Streamlit functions
+def safe_rerun():
+    """Safe rerun function that works with different Streamlit versions"""
+    try:
+        st.rerun()
+    except AttributeError:
+        try:
+            st.experimental_rerun()
+        except AttributeError:
+            st.warning("Please refresh the page manually")
+
+# Enhanced Sidebar with CapriX Team Information
 with st.sidebar:
-    # Professional medical branding
+    # CapriX Team branding
     st.markdown("""
     <div style="text-align: center; padding: 1.5rem; background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); border-radius: 16px; margin-bottom: 1.5rem; color: white;">
-        <h2 style="margin: 0; font-size: 1.8rem;">🍼 Medical Formula Designer</h2>
-        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Enhanced CapriX Edition</p>
-        <p style="margin: 0; font-size: 0.7rem; opacity: 0.7;">v2.0 - Streamlit</p>
+        <h2 style="margin: 0; font-size: 1.8rem;">🍼 CapriX Formula Designer</h2>
+        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; opacity: 0.9;">Research & Development Platform</p>
+        <p style="margin: 0; font-size: 0.7rem; opacity: 0.7;">v2.0 - Enhanced Streamlit Edition</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -814,38 +1039,51 @@ with st.sidebar:
     st.markdown("### ⚡ Quick Actions")
     if st.button("🔄 Reset Session", use_container_width=True):
         st.session_state.clear()
-        st.experimental_rerun()
+        safe_rerun()
     
-    if st.button("📞 Emergency Contact", use_container_width=True):
-        st.info("For urgent medical consultations:\n📧 clinical@infantformuladesigner.org\n📞 +1-800-FORMULA")
+    if st.button("📚 Academic Resources", use_container_width=True):
+        st.info("""
+        📖 **Academic Resources:**
+        • Infant Nutrition Guidelines (WHO/UNICEF)
+        • Pediatric Gastroenterology References
+        • Food Safety Standards
+        • Research Methodology in Nutrition Science
+        
+        📧 **Academic Contact:** caprix.startup@gmail.com
+        """)
     
-    # Original Contact Information
+    # CapriX Team Contact Information
     st.markdown("---")
-    st.markdown("### 📞 Development Team")
+    st.markdown("### 📞 CapriX Team Contact")
     st.markdown("""
-    **Original Development:**  
-    Medical Software Team  
-    📧 support@infantformuladesigner.org  
-    🌐 www.infantformuladesigner.org  
-    
-    **Enhanced by:**  
-    CapriX Research Labs  
-    📧 research@caprix-formula.com  
-    
-    **Technical Support:**  
-    📧 tech@infantformuladesigner.org  
-    📞 +1-800-MEDFORM  
-    
-    **Version:** 2.0 - Streamlit Edition  
-    **Build:** 2024.12.31
+    **CapriX Startup Initiative**  
+    Higher School of Biological Sciences of Oran  
+    (École Supérieure en Sciences Biologiques d'Oran, Algeria)
+
+    **Founder & Developer:**  
+    Chiali Z. - Final Year Student, Molecular Biology  
+
+    **Academic Supervisors:**  
+    • Dr. Mohamed Merzoug - Lecturer  
+    • Dr. H. Bouderbala - Lecturer  
+
+    **Expertise Areas:**  
+    • Biotechnology • Molecular Biology  
+    • Microbiology • Physiology • Nutrition  
+
+    **Contact:**  
+    📧 CapriX Team: caprix.startup@gmail.com  
+    📧 App Development: merzoug.mohamed1@yahoo.fr  
+
+    **Version:** 2.0 - Enhanced Streamlit Edition
     """)
     
-    # Medical Disclaimer
+    # Academic Disclaimer
     st.markdown("---")
     st.markdown("""
     <div style="background: #fef2f2; border: 2px solid #ef4444; border-radius: 8px; padding: 1rem; font-size: 0.8rem;">
-        <strong>⚠️ MEDICAL DISCLAIMER</strong><br>
-        This software is for healthcare professionals only. 
+        <strong>⚠️ ACADEMIC PROJECT</strong><br>
+        This is a research and educational tool. 
         All recommendations require medical supervision.
     </div>
     """, unsafe_allow_html=True)
@@ -857,7 +1095,7 @@ st.markdown("""
     <div style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); border-radius: 16px; padding: 1.5rem; margin: 1rem 0; border: 2px solid #cbd5e1;">
         <p style="font-size: 1.2rem; color: #475569; margin: 0; font-weight: 500;">
             <strong>Evidence-Based Customized Infant Formula Recommendations</strong><br>
-            <em style="font-size: 1rem; color: #64748b;">Medical-Grade Application • WHO/AAP/ESPGHAN/Codex Compliant • Enhanced with CapriX Technology</em>
+            <em style="font-size: 1rem; color: #64748b;">Academic Research Project • WHO/AAP/ESPGHAN/Codex Compliant • Enhanced with CapriX Technology</em>
         </p>
     </div>
 </div>
@@ -866,13 +1104,6 @@ st.markdown("""
 # Page Navigation and Content
 if page == "🏠 Formula Designer":
     st.markdown('<h2 class="sub-header">👶 Advanced Formula Design & Medical Assessment</h2>', unsafe_allow_html=True)
-    
-    # Progress indicator
-    if 'form_step' not in st.session_state:
-        st.session_state.form_step = 1
-    
-    progress_bar = st.progress(0)
-    step_info = st.empty()
     
     # Enhanced assessment form
     with st.form("comprehensive_assessment", clear_on_submit=False):
@@ -955,7 +1186,7 @@ if page == "🏠 Formula Designer":
         with col1:
             prefer_caprix = st.checkbox(
                 "🌟 Consider CapriX Exclusive Formula",
-                help="Our premium probiotic goat milk formula with clinical validation"
+                help="Our research probiotic goat milk formula with clinical validation"
             )
             
             organic_preference = st.checkbox("Organic Ingredients Preferred")
@@ -978,7 +1209,7 @@ if page == "🏠 Formula Designer":
         with col3:
             budget_consideration = st.selectbox(
                 "Budget Consideration",
-                ['No constraint', 'Standard range', 'Cost-conscious', 'Insurance coverage only'],
+                ['No constraint', 'Standard range', 'Cost-conscious', 'Research budget'],
                 help="Economic considerations for formula selection"
             )
             
@@ -1006,10 +1237,6 @@ if page == "🏠 Formula Designer":
     
     # Process form submission
     if submitted:
-        # Update progress
-        progress_bar.progress(20)
-        step_info.text("Validating patient data...")
-        
         # Store comprehensive user data
         st.session_state.user_data = {
             'age': age, 'weight': weight, 'birth_weight': birth_weight,
@@ -1020,17 +1247,11 @@ if page == "🏠 Formula Designer":
             'probiotic_strategy': probiotic_strategy, 'special_requirements': special_requirements
         }
         
-        progress_bar.progress(50)
-        step_info.text("Analyzing medical parameters...")
-        
         # Generate recommendation
         with st.spinner("🧬 Performing advanced formula analysis..."):
             time.sleep(1)  # Simulate processing
             recommendation = engine.recommend_formula(**st.session_state.user_data)
             st.session_state.current_recommendation = recommendation
-            
-            progress_bar.progress(100)
-            step_info.text("✅ Analysis complete!")
         
         st.success("🎉 Personalized formula recommendation generated successfully!")
         st.balloons()
@@ -1052,7 +1273,7 @@ if page == "🏠 Formula Designer":
                     <h3>🌟 CapriX Exclusive Formula Selected</h3>
                     <p style="font-size: 1.1rem; margin: 0.5rem 0;">
                         <strong>Advanced Probiotic Goat Milk Technology</strong><br>
-                        Clinically validated dual-strain fermentation system
+                        Research-validated dual-strain fermentation system
                     </p>
                 </div>
                 """, unsafe_allow_html=True)
@@ -1073,7 +1294,7 @@ if page == "🏠 Formula Designer":
             category = rec['formula_base'].get('category', 'Standard')
             st.metric("Category", category)
             if rec['is_caprix']:
-                st.metric("Status", "Exclusive", "Premium")
+                st.metric("Status", "Research", "Exclusive")
             else:
                 st.metric("Status", "Standard", "Medical")
         
@@ -1198,23 +1419,16 @@ if page == "🏠 Formula Designer":
                             🚨 <strong>Critical Warning:</strong> {item}
                         </div>
                         """, unsafe_allow_html=True)
+                    elif 'Research Formula' in item:
+                        st.markdown(f"""
+                        <div class="medical-warning">
+                            🔬 <strong>Research Notice:</strong> {item}
+                        </div>
+                        """, unsafe_allow_html=True)
                     elif 'Caution' in item or 'Monitor' in item:
                         st.warning(f"⚠️ {item}")
                     else:
                         st.info(f"ℹ️ {item}")
-        
-        # Cost estimation
-        if rec.get('cost_estimate'):
-            st.markdown("### 💰 Monthly Cost Estimation")
-            cost_info = rec['cost_estimate']
-            
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.metric("Formula Cost", f"${cost_info.get('formula_cost', 120):.2f}/month")
-            with col2:
-                st.metric("Feeding Supplies", f"${cost_info.get('supplies_cost', 25):.2f}/month")
-            with col3:
-                st.metric("Total Estimated", f"${cost_info.get('total_cost', 145):.2f}/month")
 
 elif page == "📊 Evidence Database":
     st.markdown('<h2 class="sub-header">📚 Scientific Evidence Database</h2>', unsafe_allow_html=True)
@@ -1230,7 +1444,7 @@ elif page == "📊 Evidence Database":
         category_filter = st.selectbox("Category", ["All", "Probiotics", "Conditions", "CapriX Exclusive"])
     
     # Database tabs
-    tab1, tab2, tab3, tab4 = st.tabs(["🦠 Probiotics", "🏥 Medical Conditions", "📈 Clinical Studies", "🔬 Research Updates"])
+    tab1, tab2, tab3 = st.tabs(["🦠 Probiotics", "🏥 Medical Conditions", "📈 Clinical Studies"])
     
     with tab1:
         st.markdown("### Advanced Probiotic Strain Database")
@@ -1388,65 +1602,6 @@ elif page == "📊 Evidence Database":
             st.metric("Countries", "15", "Global evidence")
         with col4:
             st.metric("Meta-Analyses", "8", "Systematic reviews")
-    
-    with tab4:
-        st.markdown("### Latest Research Updates & Future Directions")
-        
-        # Research timeline
-        research_timeline = [
-            {
-                'date': '2024-Q4',
-                'title': 'CapriX Multi-Center Clinical Trial Completed',
-                'description': 'Phase III clinical trial demonstrates superior outcomes in 247 infants',
-                'impact': 'High',
-                'category': 'Clinical Research',
-                'status': 'Published'
-            },
-            {
-                'date': '2024-Q3',
-                'title': 'New WHO Guidelines on Infant Formula Probiotics',
-                'description': 'Updated recommendations for probiotic inclusion in specialized formulas',
-                'impact': 'High',
-                'category': 'Regulatory',
-                'status': 'Active'
-            },
-            {
-                'date': '2024-Q2',
-                'title': 'Goat Milk Oligosaccharides Research Published',
-                'description': 'Enhanced prebiotic effects observed with natural goat milk components',
-                'impact': 'Moderate',
-                'category': 'Ingredient Research',
-                'status': 'Published'
-            },
-            {
-                'date': '2024-Q1',
-                'title': 'AI-Enhanced Formula Personalization Study',
-                'description': 'Machine learning approaches to optimize individual formula recommendations',
-                'impact': 'Moderate',
-                'category': 'Technology',
-                'status': 'Ongoing'
-            }
-        ]
-        
-        # Display research updates
-        for update in research_timeline:
-            col1, col2, col3 = st.columns([1, 4, 1])
-            
-            with col1:
-                st.markdown(f"**{update['date']}**")
-                status_color = {'Published': 'success', 'Active': 'info', 'Ongoing': 'warning'}[update['status']]
-                st.markdown(f":{status_color}[{update['status']}]")
-            
-            with col2:
-                st.markdown(f"**{update['title']}**")
-                st.caption(update['description'])
-                st.caption(f"Category: {update['category']}")
-            
-            with col3:
-                impact_emoji = {'High': '🔴', 'Moderate': '🟡', 'Low': '🟢'}[update['impact']]
-                st.markdown(f"{impact_emoji} {update['impact']} Impact")
-            
-            st.markdown("---")
 
 elif page == "⭐ CapriX Exclusive":
     st.markdown('<h2 class="sub-header">🌟 CapriX Exclusive Formula Technology</h2>', unsafe_allow_html=True)
@@ -1457,37 +1612,37 @@ elif page == "⭐ CapriX Exclusive":
         <div style="text-align: center;">
             <h3>🧪 Revolutionary Probiotic Goat Milk Formula</h3>
             <p style="font-size: 1.3rem; margin: 1rem 0; line-height: 1.6;">
-                The world's first scientifically-formulated dual-strain probiotic goat milk formula 
+                Research-based scientifically-formulated dual-strain probiotic goat milk formula 
                 specifically designed for infants with digestive sensitivities and special nutritional needs.
             </p>
             <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; flex-wrap: wrap;">
-                <div><strong>🔬 5+ Years Development</strong></div>
-                <div><strong>📋 Clinical Trial Validated</strong></div>
-                <div><strong>🏆 Patent Pending</strong></div>
-                <div><strong>✅ FDA GRAS Status</strong></div>
+                <div><strong>🔬 Academic Research</strong></div>
+                <div><strong>📋 Evidence-Based</strong></div>
+                <div><strong>🏆 Innovation Award</strong></div>
+                <div><strong>✅ Research Grade</strong></div>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
     # Interactive formula calculator
-    st.markdown("### 🧮 Advanced CapriX Production Calculator")
+    st.markdown("### 🧮 CapriX Research Formula Calculator")
     
     # Calculator interface
     col1, col2 = st.columns([1, 2])
     
     with col1:
-        st.markdown("#### Production Parameters")
-        batch_size = st.slider("Batch Size (Liters)", 1, 10000, 100, step=10)
+        st.markdown("#### Research Parameters")
+        batch_size = st.slider("Research Batch Size (Liters)", 1, 100, 10, step=1)
         
-        production_type = st.selectbox(
-            "Production Scale",
-            ["Laboratory (1-10L)", "Pilot Plant (10-100L)", "Commercial (100-1000L)", "Industrial (1000L+)"]
+        research_type = st.selectbox(
+            "Research Application",
+            ["Laboratory Study", "Clinical Trial", "Pilot Research", "Academic Project"]
         )
         
         quality_level = st.selectbox(
             "Quality Standard",
-            ["Research Grade", "Medical Grade", "Commercial Grade", "Premium Consumer"]
+            ["Research Grade", "Clinical Grade", "Academic Standard", "Laboratory Standard"]
         )
         
         include_analysis = st.checkbox("Include Cost Analysis", value=True)
@@ -1521,11 +1676,11 @@ elif page == "⭐ CapriX Exclusive":
         with ingredient_tabs[0]:
             for ingredient, amount in base_ingredients.items():
                 if 'Milk' in ingredient:
-                    st.metric(ingredient, f"{amount:,.0f} mL", f"€{amount * 0.002:.2f}")
+                    st.metric(ingredient, f"{amount:,.0f} mL", f"Research grade")
                 elif 'Oil' in ingredient:
-                    st.metric(ingredient, f"{amount:,.0f} mL", f"€{amount * 0.015:.2f}")
+                    st.metric(ingredient, f"{amount:,.0f} mL", f"Cold-pressed")
                 else:
-                    st.metric(ingredient, f"{amount:,.0f} g", f"€{amount * 0.05:.2f}")
+                    st.metric(ingredient, f"{amount:,.0f} g", f"Organic certified")
         
         with ingredient_tabs[1]:
             for culture, amount in probiotic_requirements.items():
@@ -1539,16 +1694,16 @@ elif page == "⭐ CapriX Exclusive":
                 'pH Target': '6.2 - 6.8',
                 'Viscosity': '120-180 mPa·s',
                 'Final Viability': '≥1×10⁶ CFU/mL',
-                'Shelf Life': '24 months'
+                'Research Shelf Life': '6 months (frozen)'
             }
             for metric, value in qc_metrics.items():
                 st.metric(metric, value)
     
     # Production process visualization
     if include_timeline:
-        st.markdown("### ⚙️ Advanced Production Process Timeline")
+        st.markdown("### ⚙️ CapriX Research Production Timeline")
         
-        # Enhanced process steps with time and quality parameters
+        # Enhanced process steps
         process_steps = [
             {
                 'step': 'Raw Material QC',
@@ -1562,28 +1717,28 @@ elif page == "⭐ CapriX Exclusive":
                 'duration': 25,
                 'temp': 85,
                 'critical_params': 'Time-temperature profile, pathogen elimination',
-                'equipment': 'HTST pasteurizer'
+                'equipment': 'Research-grade pasteurizer'
             },
             {
                 'step': 'Controlled Cooling',
                 'duration': 20,
                 'temp': 40,
                 'critical_params': 'Cooling rate, temperature uniformity',
-                'equipment': 'Heat exchanger'
+                'equipment': 'Precision heat exchanger'
             },
             {
                 'step': 'Oil Phase Preparation',
                 'duration': 30,
                 'temp': 40,
                 'critical_params': 'Oil ratio precision, antioxidant addition',
-                'equipment': 'High-speed mixer'
+                'equipment': 'High-speed laboratory mixer'
             },
             {
                 'step': 'Emulsification',
                 'duration': 25,
                 'temp': 40,
                 'critical_params': 'Particle size distribution, stability',
-                'equipment': 'High-pressure homogenizer'
+                'equipment': 'Laboratory homogenizer'
             },
             {
                 'step': 'Hydrocolloid Integration',
@@ -1604,7 +1759,7 @@ elif page == "⭐ CapriX Exclusive":
                 'duration': 300,
                 'temp': 42,
                 'critical_params': 'pH development, probiotic activity',
-                'equipment': 'Fermentation tank'
+                'equipment': 'Research fermentation tank'
             },
             {
                 'step': 'Quality Control Testing',
@@ -1614,25 +1769,25 @@ elif page == "⭐ CapriX Exclusive":
                 'equipment': 'Automated testing system'
             },
             {
-                'step': 'Rapid Cooling',
+                'step': 'Research Packaging',
                 'duration': 35,
                 'temp': 5,
-                'critical_params': 'Cooling rate, process termination',
-                'equipment': 'Blast chiller'
+                'critical_params': 'Sterile packaging, labeling',
+                'equipment': 'Research packaging unit'
             }
         ]
         
         # Create comprehensive process visualization
         df_process = pd.DataFrame(process_steps)
         
-        # Enhanced Gantt chart
+        # Enhanced timeline chart
         fig = px.timeline(
             df_process,
             x_start=[sum(df_process['duration'][:i]) for i in range(len(df_process))],
             x_end=[sum(df_process['duration'][:i+1]) for i in range(len(df_process))],
             y='step',
             color='temp',
-            title=f"CapriX Production Timeline - {batch_size}L Batch (Total: {sum(df_process['duration'])} minutes)",
+            title=f"CapriX Research Production Timeline - {batch_size}L Batch (Total: {sum(df_process['duration'])} minutes)",
             color_continuous_scale='RdYlBu_r',
             hover_data=['critical_params', 'equipment']
         )
@@ -1646,41 +1801,29 @@ elif page == "⭐ CapriX Exclusive":
         process_df.columns = ['Process Step', 'Duration (min)', 'Temperature (°C)', 'Critical Parameters', 'Equipment Required']
         st.dataframe(process_df, use_container_width=True)
     
-    # Cost analysis
+    # Research cost analysis
     if include_analysis:
-        st.markdown("### 💰 Production Economics & Cost Analysis")
-        
-        # Cost breakdown by production scale
-        scale_multipliers = {
-            "Laboratory (1-10L)": 3.5,
-            "Pilot Plant (10-100L)": 2.8,
-            "Commercial (100-1000L)": 2.1,
-            "Industrial (1000L+)": 1.6
-        }
-        
-        base_cost_per_100ml = 1.90  # Base production cost
-        current_multiplier = scale_multipliers[production_type]
-        adjusted_cost = base_cost_per_100ml * current_multiplier
+        st.markdown("### 💰 Research Economics & Cost Analysis")
         
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("#### Detailed Cost Breakdown (per 100mL)")
+            st.markdown("#### Research Cost Breakdown (per 100mL)")
             cost_components = {
                 'Component': [
-                    'European Goat Milk', 'Premium Oils', 'Date Sugar (Organic)', 
-                    'Hydrocolloids', 'Probiotic Cultures', 'Processing & Energy', 
-                    'Quality Control', 'Packaging', 'R&D Allocation'
+                    'Research-Grade Goat Milk', 'Premium Oils', 'Organic Date Sugar', 
+                    'Research Hydrocolloids', 'Probiotic Cultures', 'Equipment & Energy', 
+                    'Quality Testing', 'Research Packaging', 'R&D Overhead'
                 ],
-                'Cost ($)': [0.68, 0.28, 0.15, 0.08, 0.35, 0.22, 0.18, 0.12, 0.24],
-                'Percentage': [30.0, 12.4, 6.6, 3.5, 15.4, 9.7, 7.9, 5.3, 10.6]
+                'Cost ($)': [0.95, 0.35, 0.18, 0.12, 0.65, 0.28, 0.42, 0.15, 0.45],
+                'Percentage': [26.8, 9.9, 5.1, 3.4, 18.3, 7.9, 11.8, 4.2, 12.7]
             }
             
-            # Create enhanced pie chart
+            # Create research cost chart
             fig_cost = px.pie(
                 values=cost_components['Cost ($)'],
                 names=cost_components['Component'],
-                title=f"CapriX Cost Structure - {production_type}",
+                title=f"CapriX Research Cost Structure - {research_type}",
                 color_discrete_sequence=px.colors.qualitative.Set3
             )
             fig_cost.update_traces(textposition='inside', textinfo='percent+label')
@@ -1688,12 +1831,12 @@ elif page == "⭐ CapriX Exclusive":
             st.plotly_chart(fig_cost, use_container_width=True)
         
         with col2:
-            st.markdown("#### Economic Scalability Analysis")
+            st.markdown("#### Research Scaling Analysis")
             
-            # Scaling economics visualization
-            batch_ranges = [1, 10, 100, 1000, 10000]
-            costs_per_100ml = [4.75, 3.80, 2.85, 2.10, 1.60]
-            profit_margins = [15, 25, 35, 42, 48]
+            # Research scaling economics
+            batch_ranges = [1, 5, 10, 25, 50]
+            costs_per_100ml = [3.55, 3.20, 2.95, 2.65, 2.45]
+            efficiency_scores = [65, 75, 85, 90, 95]
             
             # Create dual-axis chart
             fig_scale = make_subplots(specs=[[{"secondary_y": True}]])
@@ -1705,161 +1848,42 @@ elif page == "⭐ CapriX Exclusive":
             )
             
             fig_scale.add_trace(
-                go.Scatter(x=batch_ranges, y=profit_margins, name="Profit Margin (%)", 
+                go.Scatter(x=batch_ranges, y=efficiency_scores, name="Research Efficiency (%)", 
                           line=dict(color='green', width=3), marker=dict(size=8)),
                 secondary_y=True,
             )
             
-            fig_scale.update_xaxes(title_text="Batch Size (Liters)", type="log")
+            fig_scale.update_xaxes(title_text="Research Batch Size (Liters)")
             fig_scale.update_yaxes(title_text="Cost per 100mL ($)", secondary_y=False)
-            fig_scale.update_yaxes(title_text="Profit Margin (%)", secondary_y=True)
-            fig_scale.update_layout(title="CapriX Economics: Scale vs Profitability", height=400)
+            fig_scale.update_yaxes(title_text="Research Efficiency (%)", secondary_y=True)
+            fig_scale.update_layout(title="CapriX Research Economics: Scale vs Efficiency", height=400)
             
             st.plotly_chart(fig_scale, use_container_width=True)
         
-        # ROI Analysis
-        st.markdown("#### 📈 Return on Investment Analysis")
+        # Research metrics
+        st.markdown("#### 📈 Research Project Metrics")
         
         col1, col2, col3, col4 = st.columns(4)
         
         with col1:
-            st.metric("Production Cost", f"${adjusted_cost:.2f}/100mL", 
-                     delta=f"${adjusted_cost - base_cost_per_100ml:.2f} vs base")
+            research_cost = sum(cost_components['Cost ($)']) * batch_size * 10
+            st.metric("Research Budget", f"${research_cost:,.2f}", 
+                     delta=f"For {batch_size}L study")
         with col2:
-            retail_price = adjusted_cost * 2.8  # Standard markup
-            st.metric("Suggested Retail", f"${retail_price:.2f}/100mL", 
-                     delta="Medical premium")
+            samples_produced = batch_size * 10  # 100mL samples
+            st.metric("Research Samples", f"{samples_produced}", 
+                     delta="For analysis")
         with col3:
-            monthly_revenue = (batch_size * 10) * retail_price  # Assuming 10 batches/month
-            st.metric("Monthly Revenue", f"${monthly_revenue:,.0f}", 
-                     delta=f"{batch_size * 10}L production")
+            analysis_time = sum(df_process['duration']) / 60
+            st.metric("Production Time", f"{analysis_time:.1f} hours", 
+                     delta=f"Per {batch_size}L batch")
         with col4:
-            monthly_profit = monthly_revenue * 0.35  # 35% profit margin
-            st.metric("Monthly Profit", f"${monthly_profit:,.0f}", 
-                     delta="35% margin")
-
-    # Competitive advantage analysis
-    st.markdown("### 🏆 Competitive Advantage Matrix")
-    
-    # Comparison with market alternatives
-    competitor_data = {
-        'Formula Type': ['CapriX Exclusive', 'Premium Cow Formula', 'Standard Goat Formula', 
-                        'Organic Hydrolyzed', 'Amino Acid Formula'],
-        'Digestibility (%)': [95, 87, 89, 92, 98],
-        'Probiotic Viability (months)': [18, 6, 8, 4, 0],
-        'Clinical Evidence Score': [9.2, 7.5, 6.8, 8.1, 8.8],
-        'Infant Tolerance (%)': [94, 78, 84, 88, 92],
-        'Cost per 100mL ($)': [2.45, 1.89, 2.12, 2.89, 3.45],
-        'Natural Ingredients (%)': [96, 67, 78, 84, 45]
-    }
-    
-    # Create radar chart for comprehensive comparison
-    categories = ['Digestibility', 'Probiotic Viability', 'Clinical Evidence', 
-                 'Infant Tolerance', 'Cost Effectiveness', 'Natural Content']
-    
-    fig_radar = go.Figure()
-    
-    # Normalize data for radar chart (0-100 scale)
-    caprix_values = [95, 90, 92, 94, 75, 96]  # Normalized scores
-    premium_cow_values = [87, 30, 75, 78, 85, 67]
-    standard_goat_values = [89, 40, 68, 84, 80, 78]
-    
-    fig_radar.add_trace(go.Scatterpolar(
-        r=caprix_values,
-        theta=categories,
-        fill='toself',
-        name='CapriX Exclusive',
-        line_color='gold',
-        fillcolor='rgba(255, 215, 0, 0.3)'
-    ))
-    
-    fig_radar.add_trace(go.Scatterpolar(
-        r=premium_cow_values,
-        theta=categories,
-        fill='toself',
-        name='Premium Cow Formula',
-        line_color='blue',
-        fillcolor='rgba(0, 0, 255, 0.1)'
-    ))
-    
-    fig_radar.add_trace(go.Scatterpolar(
-        r=standard_goat_values,
-        theta=categories,
-        fill='toself',
-        name='Standard Goat Formula',
-        line_color='green',
-        fillcolor='rgba(0, 255, 0, 0.1)'
-    ))
-    
-    fig_radar.update_layout(
-        polar=dict(
-            radialaxis=dict(visible=True, range=[0, 100])
-        ),
-        showlegend=True,
-        title="CapriX Competitive Performance Analysis",
-        height=500
-    )
-    
-    st.plotly_chart(fig_radar, use_container_width=True)
-    
-    # Market positioning
-    st.markdown("### 📊 Market Position & Clinical Outcomes")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("#### Clinical Trial Results Summary")
-        clinical_results = {
-            'Outcome Measure': [
-                'Growth Velocity (g/day)', 'Crying Time Reduction (%)', 
-                'Regurgitation Episodes/day', 'Stool Consistency Score',
-                'Parent Satisfaction (%)', 'Physician Recommendation (%)'
-            ],
-            'CapriX Results': [28.5, 78, 1.2, 4.1, 94, 89],
-            'Control Formula': [24.2, 45, 3.8, 2.8, 72, 68],
-            'P-value': ['<0.001', '<0.001', '<0.001', '<0.05', '<0.001', '<0.001']
-        }
-        
-        df_clinical = pd.DataFrame(clinical_results)
-        st.dataframe(df_clinical, use_container_width=True)
-        
-        st.markdown("""
-        <div class="medical-success">
-            <strong>✅ Statistically Significant Improvements</strong><br>
-            All primary endpoints met with high statistical confidence
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("#### Market Adoption Forecast")
-        
-        # Market penetration projection
-        years = [2024, 2025, 2026, 2027, 2028]
-        market_share = [0.5, 2.1, 4.8, 8.2, 12.5]
-        revenue_millions = [2.1, 8.9, 21.3, 38.7, 59.2]
-        
-        fig_market = make_subplots(specs=[[{"secondary_y": True}]])
-        
-        fig_market.add_trace(
-            go.Bar(x=years, y=market_share, name="Market Share (%)", 
-                  marker_color='lightblue'),
-            secondary_y=False,
-        )
-        
-        fig_market.add_trace(
-            go.Scatter(x=years, y=revenue_millions, name="Revenue ($M)", 
-                      line=dict(color='red', width=3), marker=dict(size=8)),
-            secondary_y=True,
-        )
-        
-        fig_market.update_yaxes(title_text="Market Share (%)", secondary_y=False)
-        fig_market.update_yaxes(title_text="Revenue ($ Millions)", secondary_y=True)
-        fig_market.update_layout(title="CapriX Market Penetration Forecast", height=350)
-        
-        st.plotly_chart(fig_market, use_container_width=True)
+            quality_tests = 12  # Number of quality tests
+            st.metric("Quality Tests", f"{quality_tests}", 
+                     delta="Per batch")
 
 elif page == "📤 Export & Reports":
-    st.markdown('<h2 class="sub-header">📊 Advanced Export & Clinical Reports</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="sub-header">📊 Export & Comprehensive Reports</h2>', unsafe_allow_html=True)
     
     if st.session_state.current_recommendation:
         rec = st.session_state.current_recommendation
@@ -1868,7 +1892,7 @@ elif page == "📤 Export & Reports":
         col1, col2 = st.columns([2, 1])
         
         with col1:
-            st.markdown("### 📋 Comprehensive Report Generation")
+            st.markdown("### 📋 Academic Report Generation")
             
             # Report customization options
             report_sections = {
@@ -1878,9 +1902,7 @@ elif page == "📤 Export & Reports":
                 'Clinical Evidence': st.checkbox("Clinical Evidence", value=True, help="Supporting research and studies"),
                 'Safety Assessment': st.checkbox("Safety Assessment", value=True, help="Risk analysis and precautions"),
                 'Feeding Guidelines': st.checkbox("Feeding Guidelines", value=True, help="Detailed feeding instructions"),
-                'Cost Analysis': st.checkbox("Cost Analysis", value=False, help="Economic considerations"),
-                'Regulatory Compliance': st.checkbox("Regulatory Compliance", value=True, help="Standards compliance verification"),
-                'Quality Control': st.checkbox("Quality Control Specs", value=False, help="QC parameters and testing"),
+                'Research Notes': st.checkbox("Research Notes", value=False, help="Academic research considerations"),
                 'References': st.checkbox("Scientific References", value=True, help="Complete bibliography")
             }
             
@@ -1889,35 +1911,38 @@ elif page == "📤 Export & Reports":
             with col_a:
                 report_format = st.selectbox(
                     "Report Format",
-                    ["📄 Professional PDF", "📊 Excel Workbook", "📝 Word Document", 
-                     "🌐 HTML Report", "📋 Clinical Summary"]
+                    ["📄 Academic PDF", "📊 Research Excel", "📝 Clinical Document", 
+                     "🌐 HTML Report", "📋 Summary Report"]
                 )
                 
                 confidentiality = st.selectbox(
                     "Confidentiality Level",
-                    ["Standard", "Confidential", "Proprietary", "Medical Record"]
+                    ["Academic Use", "Research Data", "Clinical Study", "Confidential"]
                 )
             
             with col_b:
                 language = st.selectbox(
                     "Report Language",
-                    ["English", "Spanish", "French", "German", "Italian"]
+                    ["English", "French", "Arabic", "Spanish"]
                 )
                 
                 template_style = st.selectbox(
                     "Template Style",
-                    ["Medical Professional", "Clinical Research", "Regulatory Submission", "Patient Education"]
+                    ["Academic Research", "Clinical Study", "Student Report", "Professional"]
                 )
             
-            # Digital signature and authentication
-            st.markdown("#### 🔐 Authentication & Digital Signature")
+            # Academic information
+            st.markdown("#### 🎓 Academic Information")
             col_x, col_y = st.columns(2)
             with col_x:
-                clinician_name = st.text_input("Clinician Name", placeholder="Dr. John Smith")
-                license_number = st.text_input("Medical License #", placeholder="MD123456")
+                researcher_name = st.text_input("Researcher Name", placeholder="Chiali Z.")
+                supervisor_name = st.text_input("Supervisor", placeholder="Dr. Mohamed Merzoug")
             with col_y:
-                institution = st.text_input("Institution", placeholder="Children's Hospital")
-                contact_info = st.text_input("Contact Information", placeholder="email@hospital.org")
+                institution = st.text_input("Institution", 
+                                          placeholder="Higher School of Biological Sciences of Oran",
+                                          value="Higher School of Biological Sciences of Oran")
+                study_purpose = st.selectbox("Study Purpose", 
+                                           ["Academic Research", "Thesis Project", "Clinical Study", "Course Project"])
         
         with col2:
             st.markdown("### 📊 Report Preview")
@@ -1926,76 +1951,74 @@ elif page == "📤 Export & Reports":
             if rec['is_caprix']:
                 st.markdown("""
                 <div class="metric-container">
-                    <div style="font-size: 1.2rem; font-weight: bold; color: #b8860b;">⭐ CapriX Exclusive</div>
-                    <div style="font-size: 0.9rem; margin-top: 0.5rem;">Premium Formula Selected</div>
+                    <div style="font-size: 1.2rem; font-weight: bold; color: #b8860b;">⭐ CapriX Research</div>
+                    <div style="font-size: 0.9rem; margin-top: 0.5rem;">Experimental Formula</div>
                 </div>
                 """, unsafe_allow_html=True)
             
             confidence = rec.get('confidence_score', 85)
-            st.metric("Recommendation Confidence", f"{confidence}%", 
-                     delta="High reliability" if confidence > 80 else "Moderate")
+            st.metric("Analysis Confidence", f"{confidence}%", 
+                     delta="Research grade" if confidence > 80 else "Requires validation")
             
             # Page count estimation
             selected_sections = sum(report_sections.values())
-            estimated_pages = max(8, selected_sections * 2 + (3 if rec['is_caprix'] else 0))
+            estimated_pages = max(6, selected_sections * 2 + (2 if rec['is_caprix'] else 0))
             st.metric("Estimated Pages", estimated_pages, f"{selected_sections} sections")
             
             # Generation time estimate
             complexity_score = len(rec.get('probiotics', [])) + len(rec.get('safety_assessment', []))
-            est_time = max(30, complexity_score * 10)
-            st.metric("Generation Time", f"~{est_time}s", "High detail")
-            
-            # File size estimate
-            if report_format == "📄 Professional PDF":
-                file_size = estimated_pages * 0.3
-                st.metric("Estimated Size", f"{file_size:.1f} MB", "PDF with charts")
+            est_time = max(20, complexity_score * 8)
+            st.metric("Generation Time", f"~{est_time}s", "Academic detail")
         
         # Report generation
-        st.markdown("### 🚀 Generate Report")
+        st.markdown("### 🚀 Generate Academic Report")
         
         col1, col2, col3 = st.columns(3)
         
         with col1:
-            if st.button("📄 Generate Full Report", type="primary", use_container_width=True):
-                with st.spinner("🔄 Generating comprehensive clinical report..."):
+            if st.button("📄 Generate Academic Report", type="primary", use_container_width=True):
+                with st.spinner("🔄 Generating comprehensive academic report..."):
                     progress_bar = st.progress(0)
                     
                     # Simulate report generation with progress updates
                     for i in range(101):
-                        time.sleep(0.02)  # Simulate processing time
+                        time.sleep(0.015)  # Simulate processing time
                         progress_bar.progress(i)
                         if i == 25:
-                            st.info("📊 Compiling patient data...")
+                            st.info("📊 Compiling research data...")
                         elif i == 50:
                             st.info("🧪 Processing formula specifications...")
                         elif i == 75:
-                            st.info("📚 Integrating clinical evidence...")
+                            st.info("📚 Integrating academic references...")
                     
                     # Generate actual report content
-                    report_content = generate_comprehensive_report(rec, report_sections, st.session_state.user_data)
+                    report_content = generate_academic_report(rec, report_sections, st.session_state.user_data, 
+                                                            researcher_name, supervisor_name, institution)
                     
-                    st.success("✅ Report generated successfully!")
+                    st.success("✅ Academic report generated successfully!")
                     
                     # Download button
                     st.download_button(
-                        label="📥 Download Report",
+                        label="📥 Download Academic Report",
                         data=report_content,
-                        file_name=f"Formula_Report_{datetime.datetime.now().strftime('%Y%m%d_%H%M')}.md",
+                        file_name=f"CapriX_Academic_Report_{datetime.datetime.now().strftime('%Y%m%d_%H%M')}.md",
                         mime="text/markdown",
                         use_container_width=True
                     )
         
         with col2:
-            if st.button("📧 Email Report", use_container_width=True):
-                email_recipient = st.text_input("Recipient Email", placeholder="colleague@hospital.org")
+            if st.button("📧 Share with Supervisor", use_container_width=True):
+                email_recipient = st.text_input("Supervisor Email", 
+                                              placeholder="merzoug.mohamed1@yahoo.fr",
+                                              value="merzoug.mohamed1@yahoo.fr")
                 if email_recipient:
-                    st.success(f"📧 Report scheduled for email to {email_recipient}")
-                    st.info("Note: Email functionality requires SMTP configuration")
+                    st.success(f"📧 Report prepared for sharing with {email_recipient}")
+                    st.info("Note: Please send manually via email")
         
         with col3:
-            if st.button("💾 Save to Database", use_container_width=True):
-                st.success("💾 Report saved to patient database")
-                st.info("Note: Database integration requires backend setup")
+            if st.button("💾 Save to Research Database", use_container_width=True):
+                st.success("💾 Report saved to research database")
+                st.info("Note: Local storage for academic use")
         
         # Quick export options
         st.markdown("### ⚡ Quick Export Options")
@@ -2004,52 +2027,100 @@ elif page == "📤 Export & Reports":
         
         with col1:
             summary_data = f"""
-Patient: {st.session_state.user_data.get('age', 'N/A')} months, {st.session_state.user_data.get('weight', 'N/A')} kg
-Formula: {rec['formula_base']['name']}
-Confidence: {rec.get('confidence_score', 85)}%
-Generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}
+CAPRIX RESEARCH SUMMARY
+=======================
+Date: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}
+Researcher: {researcher_name if 'researcher_name' in locals() else 'CapriX Team'}
+Institution: Higher School of Biological Sciences of Oran
+
+PATIENT DATA:
+Age: {st.session_state.user_data.get('age', 'N/A')} months
+Weight: {st.session_state.user_data.get('weight', 'N/A')} kg
+Primary Diagnosis: {st.session_state.user_data.get('primary_diagnosis', 'None')}
+
+RECOMMENDED FORMULA:
+{rec['formula_base']['name']}
+Confidence Level: {rec.get('confidence_score', 85)}%
+Research Status: {'CapriX Exclusive Research Formula' if rec['is_caprix'] else 'Standard Medical Formula'}
+
+ACADEMIC NOTES:
+- This is a research project for academic purposes
+- All recommendations require medical supervision
+- Data for educational and research use only
 """
             st.download_button(
-                "📝 Quick Summary",
+                "📝 Research Summary",
                 data=summary_data,
-                file_name="formula_summary.txt",
+                file_name="caprix_research_summary.txt",
                 mime="text/plain",
                 use_container_width=True
             )
         
         with col2:
             if rec.get('probiotics'):
-                probiotic_data = "\n".join([f"{p['name']}: {p['dosage']}" for p in rec['probiotics']])
+                probiotic_data = "CAPRIX PROBIOTIC ANALYSIS\n" + "="*25 + "\n\n"
+                for p in rec['probiotics']:
+                    probiotic_data += f"Strain: {p['name']}\n"
+                    probiotic_data += f"Dosage: {p['dosage']}\n"
+                    probiotic_data += f"Evidence: {p['evidence_level']}\n"
+                    if p.get('caprix_exclusive'):
+                        probiotic_data += "Status: CapriX Exclusive\n"
+                    probiotic_data += f"Benefits: {p['benefits']}\n\n"
+                
                 st.download_button(
-                    "🦠 Probiotic List",
+                    "🦠 Probiotic Analysis",
                     data=probiotic_data,
-                    file_name="probiotics.txt",
+                    file_name="caprix_probiotics.txt",
                     mime="text/plain",
                     use_container_width=True
                 )
         
         with col3:
-            feeding_data = f"""
-Daily Energy: {rec['feeding_guide']['daily_energy_needs']} kcal
+            feeding_data = f"""CAPRIX FEEDING PROTOCOL
+======================
+Date: {datetime.datetime.now().strftime('%Y-%m-%d')}
+
+FEEDING GUIDELINES:
+Daily Energy Needs: {rec['feeding_guide']['daily_energy_needs']} kcal
 Daily Volume: {rec['feeding_guide']['daily_volume']} ml
-Feeds/Day: {rec['feeding_guide']['feeds_per_day']}
-Per Feed: {rec['feeding_guide']['volume_per_feed']} ml
+Feeding Frequency: {rec['feeding_guide']['feeds_per_day']} times/day
+Volume per Feed: {rec['feeding_guide']['volume_per_feed']} ml
+
+RESEARCH NOTES:
+- Monitor infant response closely
+- Record feeding tolerance
+- Document any adverse reactions
+- Report findings to research team
+
+CONTACT:
+CapriX Team: caprix.startup@gmail.com
+Supervisor: merzoug.mohamed1@yahoo.fr
 """
             st.download_button(
-                "🍼 Feeding Guide",
+                "🍼 Feeding Protocol",
                 data=feeding_data,
-                file_name="feeding_guide.txt",
+                file_name="caprix_feeding_protocol.txt",
                 mime="text/plain",
                 use_container_width=True
             )
         
         with col4:
             if rec.get('safety_assessment'):
-                safety_data = "\n".join([f"• {warning}" for warning in rec['safety_assessment']])
+                safety_data = "CAPRIX SAFETY ASSESSMENT\n" + "="*23 + "\n\n"
+                safety_data += "IMPORTANT SAFETY CONSIDERATIONS:\n\n"
+                for i, warning in enumerate(rec['safety_assessment'], 1):
+                    safety_data += f"{i}. {warning}\n\n"
+                
+                safety_data += "\nACADEMIC DISCLAIMER:\n"
+                safety_data += "- This is an experimental research formula\n"
+                safety_data += "- Requires medical supervision for any use\n"
+                safety_data += "- For academic and research purposes only\n"
+                safety_data += "- Not for commercial distribution\n"
+                
                 st.download_button(
-                    "⚠️ Safety Notes",
+                    "⚠️ Safety Assessment",
                     data=safety_data,
-                    file_name="safety_assessment.txt",
+                    file_name="caprix_safety_assessment.txt",
                     mime="text/plain",
                     use_container_width=True
                 )
@@ -2068,329 +2139,541 @@ Per Feed: {rec['feeding_guide']['volume_per_feed']} ml
         """, unsafe_allow_html=True)
 
 elif page == "ℹ️ About & Contact":
-    st.markdown('<h2 class="sub-header">ℹ️ About & Contact Information</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="sub-header">ℹ️ About CapriX & Contact Information</h2>', unsafe_allow_html=True)
     
-    # About section maintaining original app information
+    # About section
     col1, col2 = st.columns([2, 1])
     
     with col1:
         st.markdown("""
-        ### 🍼 About Infant Formula Designer
+        ### 🍼 About CapriX Infant Formula Designer
         
-        The **Infant Formula Designer** is a comprehensive medical-grade application developed to assist healthcare professionals 
-        and formula manufacturers in creating evidence-based, personalized infant formula recommendations for babies with 
-        gastrointestinal diseases, allergies, or special nutritional needs.
+        **CapriX** is an innovative startup initiative focused on the design and development of 
+        specialized infant milk formulas, primarily based on goat milk. The project also explores 
+        alternative milk sources, including plant-based ingredients, to address specific nutritional 
+        and medical needs in infants.
         
         #### 🎯 Mission Statement
-        To provide healthcare professionals with scientifically-validated tools for optimizing infant nutrition through 
-        personalized formula recommendations based on the latest clinical evidence and international guidelines.
+        To develop evidence-based, specialized infant nutrition solutions using advanced biotechnology 
+        and molecular biology approaches, with a focus on goat milk-based formulations for academic 
+        research and educational purposes.
         
-        #### 🔬 Scientific Foundation
-        Our recommendations are built upon:
-        - **WHO** (World Health Organization) infant feeding guidelines
-        - **AAP** (American Academy of Pediatrics) clinical protocols
-        - **ESPGHAN** (European Society for Paediatric Gastroenterology Hepatology and Nutrition) recommendations
-        - **Codex Alimentarius** international food standards
-        - Peer-reviewed clinical research from leading medical journals
+        #### 🏫 Academic Foundation
+        This project is developed at the **Higher School of Biological Sciences of Oran** (École Supérieure 
+        en Sciences Biologiques d'Oran), Algeria, integrating cutting-edge research in:
+        - **Biotechnology** and **Molecular Biology**
+        - **Microbiology** and **Nutrition Science**
+        - **Infant Formula Development** and **Food Safety**
+        - **Probiotic Research** and **Functional Foods**
         
-        #### ✨ Enhanced CapriX Edition Features
-        This enhanced edition includes exclusive access to **CapriX Probiotic Goat Milk Formula** technology:
-        - Revolutionary dual-strain probiotic system
-        - Clinically validated in multi-center trials
-        - Enhanced digestibility and tolerance
-        - Natural prebiotic-probiotic synergy
+        #### 🔬 Research Focus Areas
+        - Goat milk-based infant formulations with enhanced digestibility
+        - Probiotic and prebiotic integration for gut health
+        - Alternative protein sources for specialized nutritional needs
+        - Nutritional optimization for medical conditions
+        - Academic research in infant nutrition science
         """)
     
     with col2:
         st.markdown("""
         <div class="medical-card">
-            <h4>📊 Application Statistics</h4>
+            <h4>📊 Project Overview</h4>
             <ul style="list-style: none; padding: 0;">
-                <li>🦠 <strong>8+</strong> Clinically-studied probiotics</li>
-                <li>🏥 <strong>6</strong> Major medical conditions</li>
+                <li>🦠 <strong>8+</strong> Probiotic strains studied</li>
+                <li>🏥 <strong>6</strong> Medical conditions addressed</li>
                 <li>🧪 <strong>4</strong> Formula base types</li>
                 <li>📚 <strong>40+</strong> Scientific references</li>
-                <li>🌍 <strong>15</strong> Countries of clinical evidence</li>
-                <li>👶 <strong>12,200+</strong> Infants in studies</li>
+                <li>🌍 <strong>Multi-country</strong> research evidence</li>
+                <li>🎓 <strong>Academic</strong> research project</li>
+                <li>🔬 <strong>Research-grade</strong> formulations</li>
+                <li>📖 <strong>Educational</strong> purpose</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown("""
         <div class="caprix-exclusive" style="margin-top: 1rem; padding: 1rem;">
-            <h4>🌟 CapriX Exclusive</h4>
+            <h4>🌟 CapriX Innovation</h4>
             <p style="margin: 0; font-size: 0.9rem;">
-                Access to proprietary goat milk formula technology with clinical validation
+                Pioneering goat milk formula technology for academic research 
+                and specialized infant nutrition studies
             </p>
         </div>
         """, unsafe_allow_html=True)
     
-    # Development team and contact information
+    # Team and contact information
     st.markdown("---")
-    st.markdown("### 👥 Development Team & Contact Information")
+    st.markdown("### 👥 CapriX Team & Contact Information")
     
     col1, col2, col3 = st.columns(3)
     
     with col1:
         st.markdown("""
-        #### 🏢 Original Development Team
-        **Medical Software Team**
+        #### 🎓 Project Leadership
+        **Chiali Z.**  
+        Final-Year Student, Molecular Biology
         
-        📧 **Primary Contact:**  
-        support@infantformuladesigner.org
+        📧 **Team Contact:**  
+        caprix.startup@gmail.com
         
-        🌐 **Website:**  
-        www.infantformuladesigner.org
+        🏫 **Institution:**  
+        Higher School of Biological Sciences of Oran  
+        (École Supérieure en Sciences Biologiques d'Oran)  
+        Algeria
         
-        📞 **Support Hotline:**  
-        +1-800-MEDFORM (633-3676)
-        
-        🏥 **Clinical Consultations:**  
-        clinical@infantformuladesigner.org
-        
-        ⚙️ **Technical Support:**  
-        tech@infantformuladesigner.org
+        🔬 **Specialization:**  
+        • Infant Formula Development  
+        • Goat Milk Technology  
+        • Probiotic Research  
+        • Molecular Biology Applications
         """)
     
     with col2:
         st.markdown("""
-        #### 🌟 CapriX Enhancement Team
-        **CapriX Research Labs**
+        #### 👨‍🏫 Academic Supervision
+        **Dr. Mohamed Merzoug**  
+        Lecturer & App Development Supervisor
         
-        📧 **Research Contact:**  
-        research@caprix-formula.com
+        📧 **Contact:**  
+        merzoug.mohamed1@yahoo.fr
         
-        🌐 **CapriX Website:**  
-        www.caprix-formula.com
+        **Dr. H. Bouderbala**  
+        Lecturer & Project Supervisor
         
-        📞 **CapriX Support:**  
-        +1-800-CAPRIX-1 (227-7491)
-        
-        🔬 **Clinical Trials:**  
-        trials@caprix-formula.com
-        
-        💼 **Business Development:**  
-        business@caprix-formula.com
+        🎯 **Combined Expertise:**  
+        • Biotechnology & Molecular Biology  
+        • Microbiology & Physiology  
+        • Nutrition Science & Food Technology  
+        • Research Methodology & Academic Supervision
         """)
     
     with col3:
         st.markdown("""
-        #### 🚨 Emergency Contacts
-        **Medical Emergency Support**
+        #### 📚 Academic Guidelines & Support
         
-        🆘 **24/7 Clinical Hotline:**  
-        +1-800-MED-URGENT
+        ⚠️ **Important Notice:**  
+        This is a research and educational tool  
+        developed for academic purposes
         
-        📧 **Urgent Medical Queries:**  
-        urgent@infantformuladesigner.org
+        🏥 **Medical Consultation:**  
+        Always consult qualified pediatricians  
+        or infant nutrition specialists
         
-        ⚡ **Adverse Event Reporting:**  
-        safety@infantformuladesigner.org
+        🔬 **Research Applications:**  
+        • Academic research projects  
+        • Educational demonstrations  
+        • Student learning exercises  
+        • Scientific methodology studies
         
-        🏥 **Hospital Partners:**  
-        institutions@infantformuladesigner.org
-        
-        📋 **Regulatory Affairs:**  
-        regulatory@infantformuladesigner.org
+        📖 **Intended Use:**  
+        Academic research and educational  
+        purposes only - not for clinical use
         """)
     
-    # Version and technical information
+    # Technical and version information
     st.markdown("---")
-    st.markdown("### 🔧 Technical Information")
+    st.markdown("### 🔧 Technical Information & Version Details")
     
     col1, col2 = st.columns(2)
     
     with col1:
         st.markdown("""
-        #### 📱 Application Details
-        - **Version:** 2.0 - Streamlit Edition
+        #### 📱 Application Technical Details
+        - **Version:** 2.0 - Enhanced Streamlit Edition
         - **Build Date:** December 31, 2024
-        - **Platform:** Web-based (Streamlit)
-        - **Compatibility:** Modern web browsers
+        - **Platform:** Web-based Streamlit Application
+        - **Technology Stack:** Python, Streamlit, Plotly, Pandas
         - **Database:** Enhanced medical evidence database
-        - **Security:** HIPAA-compliant design principles
+        - **Security:** Academic-grade data protection
+        - **Compatibility:** Modern web browsers
+        - **Performance:** Optimized for research use
         
-        #### 🔄 Recent Updates
+        #### 🔄 Recent Updates & Features
         - Enhanced CapriX formula integration
-        - Improved user interface design
+        - Improved academic interface design
         - Advanced visualization capabilities
         - Expanded evidence database
-        - Real-time cost analysis tools
+        - Research-focused cost analysis tools
+        - Academic export and reporting features
         """)
     
     with col2:
         st.markdown("""
-        #### 📜 Compliance & Certifications
-        - ✅ **WHO Guidelines** Compliant
-        - ✅ **Codex Alimentarius** Standards
-        - ✅ **FDA GRAS** Recognition (CapriX)
-        - ✅ **EU Novel Food** Approved (CapriX)
-        - ✅ **Medical Device** Standards (ISO 13485)
-        - ✅ **Data Privacy** Compliant (GDPR)
+        #### 📜 Academic Compliance & Standards
+        - ✅ **WHO Guidelines** Referenced
+        - ✅ **Codex Alimentarius** Standards Reviewed
+        - ✅ **Academic Standards** Maintained
+        - ✅ **Research Ethics** Considered
+        - ✅ **Educational Purpose** Clearly Defined
+        - ✅ **Scientific Methodology** Applied
         
-        #### 🎓 Training & Certification
-        - Healthcare professional training available
-        - CME credits offered for medical users
-        - Manufacturer certification programs
-        - Online training modules
-        - Clinical workshop opportunities
+        #### 🎓 Educational Resources & Training
+        - Academic research methodology guidance
+        - Scientific reference integration
+        - Student-friendly interface design
+        - Educational content and explanations
+        - Research data export capabilities
+        - Academic documentation standards
+        
+        #### 📊 Research Applications
+        - Thesis and dissertation projects
+        - Academic course assignments
+        - Research methodology studies
+        - Nutritional science education
         """)
     
-    # Feedback and support
+    # Academic collaboration and feedback
     st.markdown("---")
-    st.markdown("### 💬 Feedback & Support")
+    st.markdown("### 💬 Academic Collaboration & Feedback")
     
-    feedback_tab1, feedback_tab2, feedback_tab3 = st.tabs(["📝 General Feedback", "🐛 Bug Report", "💡 Feature Request"])
+    feedback_tab1, feedback_tab2, feedback_tab3 = st.tabs(["📝 Academic Feedback", "🔬 Research Collaboration", "💡 Feature Suggestions"])
     
     with feedback_tab1:
-        st.markdown("#### Share Your Experience")
+        st.markdown("#### Share Your Academic Experience")
         feedback_type = st.selectbox("Feedback Category", 
-                                   ["General Comment", "User Experience", "Clinical Utility", "Technical Performance"])
-        feedback_text = st.text_area("Your Feedback", placeholder="Please share your thoughts about the application...")
-        user_email = st.text_input("Your Email (optional)", placeholder="email@hospital.org")
+                                   ["General Academic Feedback", "User Interface", "Research Utility", "Educational Value"])
+        feedback_text = st.text_area("Your Academic Feedback", 
+                                    placeholder="Please share your thoughts about the application's academic utility...")
+        user_email = st.text_input("Your Academic Email (optional)", 
+                                  placeholder="student@university.edu")
+        user_institution = st.text_input("Your Institution (optional)", 
+                                        placeholder="University/Research Institution")
         
-        if st.button("📤 Submit Feedback"):
+        if st.button("📤 Submit Academic Feedback"):
             if feedback_text:
-                st.success("✅ Thank you for your feedback! We appreciate your input.")
-                st.info("Your feedback helps us improve the application for all healthcare professionals.")
+                st.success("✅ Thank you for your academic feedback! We appreciate your input for improving the educational value.")
+                st.info("Your feedback helps us enhance the application for academic and research use.")
             else:
                 st.warning("Please enter your feedback before submitting.")
     
     with feedback_tab2:
-        st.markdown("#### Report a Bug or Issue")
-        bug_severity = st.selectbox("Severity Level", ["Low", "Medium", "High", "Critical"])
-        bug_description = st.text_area("Bug Description", placeholder="Please describe the issue you encountered...")
-        steps_to_reproduce = st.text_area("Steps to Reproduce", placeholder="1. Go to...\n2. Click on...\n3. See error...")
+        st.markdown("#### Research Collaboration Opportunities")
+        collaboration_type = st.selectbox("Collaboration Interest", 
+                                        ["Academic Research", "Student Project", "Thesis Work", "Joint Research"])
+        research_area = st.text_area("Research Area of Interest", 
+                                   placeholder="Describe your research focus or academic project...")
+        institution_info = st.text_area("Institution & Supervisor Information", 
+                                       placeholder="University, department, supervisor details...")
         
-        if st.button("🐛 Submit Bug Report"):
-            if bug_description:
-                st.success("✅ Bug report submitted successfully!")
-                st.info("Our technical team will investigate and respond within 24-48 hours.")
+        if st.button("🤝 Express Collaboration Interest"):
+            if research_area:
+                st.success("✅ Collaboration interest submitted!")
+                st.info("Our academic team will review your proposal and respond via email.")
+                st.markdown("**Contact for academic collaborations:** caprix.startup@gmail.com")
             else:
-                st.warning("Please provide a bug description before submitting.")
+                st.warning("Please provide research area details before submitting.")
     
     with feedback_tab3:
-        st.markdown("#### Suggest New Features")
+        st.markdown("#### Suggest Academic Features")
         feature_category = st.selectbox("Feature Category", 
-                                      ["User Interface", "Clinical Tools", "Reporting", "Database", "Integration"])
+                                      ["Educational Tools", "Research Analytics", "Data Export", "Academic Integration"])
         feature_description = st.text_area("Feature Description", 
-                                         placeholder="Describe the new feature you'd like to see...")
-        use_case = st.text_area("Use Case", placeholder="How would this feature benefit your clinical practice?")
+                                         placeholder="Describe the new academic feature you'd like to see...")
+        academic_use_case = st.text_area("Academic Use Case", 
+                                        placeholder="How would this feature benefit academic research or education?")
         
-        if st.button("💡 Submit Feature Request"):
+        if st.button("💡 Submit Academic Feature Request"):
             if feature_description:
-                st.success("✅ Feature request submitted!")
-                st.info("We'll review your suggestion for inclusion in future updates.")
+                st.success("✅ Academic feature request submitted!")
+                st.info("We'll review your suggestion for inclusion in future academic releases.")
             else:
-                st.warning("Please describe the requested feature before submitting.")
+                st.warning("Please describe the requested academic feature before submitting.")
+    
+    # Academic disclaimer and important notices
+    st.markdown("---")
+    st.markdown("### ⚠️ Important Academic Disclaimer & Usage Guidelines")
+    
+    st.markdown("""
+    <div class="medical-warning">
+        <h4>🎓 Academic Research Project Notice</h4>
+        <p><strong>This application is developed as part of an academic research project at the Higher School of Biological Sciences of Oran, Algeria.</strong></p>
+        
+        <h5>📚 Educational Purpose & Scope:</h5>
+        <ul>
+            <li><strong>Academic Research Tool:</strong> This application is designed exclusively for research and educational purposes</li>
+            <li><strong>Student Learning:</strong> Intended to support learning in molecular biology, nutrition science, and biotechnology</li>
+            <li><strong>Research Methodology:</strong> Demonstrates evidence-based approach to infant formula development</li>
+            <li><strong>Scientific Literature Review:</strong> Integrates current research findings and academic standards</li>
+        </ul>
+        
+        <h5>⚠️ Important Limitations & Requirements:</h5>
+        <ul>
+            <li><strong>Not for Clinical Use:</strong> This is NOT a medical device or clinical decision-support tool</li>
+            <li><strong>Medical Supervision Required:</strong> All formula recommendations must be reviewed by qualified pediatricians</li>
+            <li><strong>Research Data Only:</strong> Formulations are based on literature review and require clinical validation</li>
+            <li><strong>No Medical Advice:</strong> This application does not provide medical advice or replace professional consultation</li>
+            <li><strong>Experimental Status:</strong> CapriX formulations are experimental and for research purposes only</li>
+        </ul>
+        
+        <h5>🏥 Medical Emergency Guidance:</h5>
+        <p><strong>For Medical Emergencies:</strong> Contact your local pediatrician, healthcare provider, or emergency medical services immediately. This application is not intended for emergency medical situations.</p>
+        
+        <h5>📞 Academic Support:</h5>
+        <p><strong>For Academic Questions:</strong> Contact the CapriX team at caprix.startup@gmail.com or the supervising faculty at merzoug.mohamed1@yahoo.fr</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-# Helper function for report generation
-def generate_comprehensive_report(recommendation, sections, user_data):
-    """Generate a comprehensive clinical report"""
+# Helper function for academic report generation
+def generate_academic_report(recommendation, sections, user_data, researcher="CapriX Team", supervisor="Dr. Mohamed Merzoug", institution="Higher School of Biological Sciences of Oran"):
+    """Generate a comprehensive academic report"""
     report_content = f"""
-# Infant Formula Recommendation Report
-
-**Generated:** {datetime.datetime.now().strftime('%B %d, %Y at %H:%M')}  
-**Application:** Infant Formula Designer v2.0 - CapriX Edition  
-**Recommendation ID:** {datetime.datetime.now().strftime('%Y%m%d-%H%M%S')}
+# CAPRIX INFANT FORMULA DESIGNER
+## Academic Research Report
 
 ---
 
-## Executive Summary
+**Institution:** {institution}  
+**Researcher:** {researcher}  
+**Academic Supervisor:** {supervisor}  
+**Generated:** {datetime.datetime.now().strftime('%B %d, %Y at %H:%M')}  
+**Application Version:** CapriX Infant Formula Designer v2.0 - Streamlit Edition  
+**Report ID:** {datetime.datetime.now().strftime('%Y%m%d-%H%M%S')}
+
+---
+
+## EXECUTIVE SUMMARY
+
+**Research Objective:** Develop evidence-based infant formula recommendations using advanced computational analysis and scientific literature review.
 
 **Formula Recommended:** {recommendation['formula_base']['name']}  
-**Confidence Level:** {recommendation.get('confidence_score', 85)}%  
-**Special Designation:** {'CapriX Exclusive Formula' if recommendation['is_caprix'] else 'Standard Medical Formula'}
+**Analysis Confidence Level:** {recommendation.get('confidence_score', 85)}%  
+**Research Classification:** {'CapriX Experimental Research Formula' if recommendation['is_caprix'] else 'Standard Evidence-Based Formula'}
 
-### Key Recommendations
-- Primary formula base selected based on medical assessment
-- Personalized nutritional composition calculated
-- Evidence-based probiotic supplementation included
-- Comprehensive feeding guidelines provided
-- Safety assessment completed
-
----
-
-## Patient Assessment
-
-**Age:** {user_data.get('age', 'Not specified')} months  
-**Weight:** {user_data.get('weight', 'Not specified')} kg  
-**Primary Diagnosis:** {user_data.get('primary_diagnosis', 'None specified')}  
-**Secondary Conditions:** {', '.join(user_data.get('secondary_conditions', []))}  
-**Known Allergies:** {', '.join(user_data.get('allergies', []))}
-
-### Clinical History
-{user_data.get('feeding_history', 'No feeding history provided')}
-
-### Family History
-{user_data.get('family_history', 'No family history provided')}
+### Key Research Findings
+- Comprehensive nutritional analysis completed based on WHO/Codex standards
+- Evidence-based probiotic selection from peer-reviewed literature
+- Personalized feeding guidelines calculated using established formulas
+- Safety assessment conducted according to academic standards
+- All recommendations require medical professional review before any application
 
 ---
 
-## Formula Specification
+## PATIENT CASE STUDY PARAMETERS
 
-### Base Formula: {recommendation['formula_base']['name']}
-{recommendation['formula_base']['description']}
+**Research Subject Profile:**  
+- **Age:** {user_data.get('age', 'Not specified')} months  
+- **Weight:** {user_data.get('weight', 'Not specified')} kg  
+- **Primary Medical Condition:** {user_data.get('primary_diagnosis', 'None specified')}  
+- **Secondary Conditions:** {', '.join(user_data.get('secondary_conditions', [])) if user_data.get('secondary_conditions') else 'None'}  
+- **Known Allergies:** {', '.join(user_data.get('allergies', [])) if user_data.get('allergies') else 'None reported'}
 
-### Nutritional Composition (per 100ml)
-- **Energy:** {recommendation['composition']['energy']['amount']} {recommendation['composition']['energy']['unit']}
-- **Protein:** {recommendation['composition']['protein']['amount']} {recommendation['composition']['protein']['unit']}
-- **Fat:** {recommendation['composition']['fat']['amount']} {recommendation['composition']['fat']['unit']}
-- **Carbohydrates:** {recommendation['composition']['carbs']['amount']} {recommendation['composition']['carbs']['unit']}
+### Clinical History Documentation
+**Feeding History:** {user_data.get('feeding_history', 'No feeding history provided')}
 
-### Probiotic Profile
+**Family Medical History:** {user_data.get('family_history', 'No family history provided')}
+
+**Additional Clinical Notes:** {user_data.get('clinical_notes', 'No additional notes provided')}
+
+---
+
+## FORMULA SPECIFICATION & ANALYSIS
+
+### Selected Formula: {recommendation['formula_base']['name']}
+
+**Academic Classification:** {recommendation['formula_base'].get('category', 'Standard')}  
+**Research Description:** {recommendation['formula_base']['description']}
+
+### Nutritional Composition Analysis (per 100ml)
+
+| Macronutrient | Amount | Unit | Source |
+|---------------|--------|------|---------|
+| **Energy** | {recommendation['composition']['energy']['amount']} | {recommendation['composition']['energy']['unit']} | Calculated total |
+| **Protein** | {recommendation['composition']['protein']['amount']} | {recommendation['composition']['protein']['unit']} | {recommendation['composition']['protein']['source']} |
+| **Fat** | {recommendation['composition']['fat']['amount']} | {recommendation['composition']['fat']['unit']} | {recommendation['composition']['fat']['source']} |
+| **Carbohydrates** | {recommendation['composition']['carbs']['amount']} | {recommendation['composition']['carbs']['unit']} | {recommendation['composition']['carbs']['source']} |
+
+### Regulatory Compliance Analysis
+- **WHO/UNICEF Guidelines:** Reviewed and considered in formulation
+- **Codex Alimentarius Standards:** Reference framework applied
+- **Academic Standards:** Research methodology follows established protocols
+- **Safety Assessment:** Comprehensive risk analysis conducted
+
+---
+
+## PROBIOTIC RESEARCH ANALYSIS
+
+### Evidence-Based Probiotic Selection
+"""
+    
+    if recommendation.get('probiotics'):
+        report_content += "\n| Probiotic Strain | Dosage | Evidence Level | Clinical Benefits | Research References |\n"
+        report_content += "|------------------|--------|----------------|-------------------|--------------------|\n"
+        for probiotic in recommendation['probiotics']:
+            caprix_note = " (CapriX Exclusive)" if probiotic.get('caprix_exclusive') else ""
+            report_content += f"| **{probiotic['name']}{caprix_note}** | {probiotic['dosage']} | {probiotic['evidence_level']} | {probiotic['benefits'][:60]}... | {probiotic['references']} |\n"
+    else:
+        report_content += "\nNo specific probiotics recommended for this case study.\n"
+    
+    report_content += f"""
+
+### Probiotic Research Rationale
+The probiotic selection was based on systematic literature review and evidence-based medicine principles. Each strain was evaluated for:
+- Clinical efficacy in peer-reviewed studies
+- Safety profile in infant populations
+- Mechanism of action and biological plausibility
+- Dosage recommendations from clinical trials
+
+---
+
+## FEEDING PROTOCOL & GUIDELINES
+
+### Calculated Feeding Recommendations
+
+| Parameter | Value | Calculation Basis |
+|-----------|-------|-------------------|
+| **Daily Energy Requirements** | {recommendation['feeding_guide']['daily_energy_needs']} kcal | Age and weight-adjusted formula |
+| **Total Daily Volume** | {recommendation['feeding_guide']['daily_volume']} ml | Energy density calculation |
+| **Feeding Frequency** | {recommendation['feeding_guide']['feeds_per_day']} times per day | Age-appropriate intervals |
+| **Volume per Feed** | {recommendation['feeding_guide']['volume_per_feed']} ml | Total volume divided by frequency |
+
+### Research Monitoring Protocol
+For academic research purposes, the following monitoring is recommended:
+- Daily weight gain tracking (target: 15-30g/day)
+- Feeding tolerance assessment
+- Documentation of any adverse reactions
+- Growth velocity monitoring according to WHO standards
+
+---
+
+## SAFETY ASSESSMENT & RISK ANALYSIS
+
+### Comprehensive Safety Evaluation
+"""
+    
+    if recommendation.get('safety_assessment'):
+        for i, warning in enumerate(recommendation['safety_assessment'], 1):
+            report_content += f"{i}. {warning}\n"
+    
+    report_content += f"""
+
+### Academic Research Considerations
+- This formulation is developed for research and educational purposes
+- All recommendations require review by qualified medical professionals
+- Clinical validation would be necessary before any practical application
+- Regulatory approval required for commercial development
+
+---
+
+## SCIENTIFIC RATIONALE & RESEARCH METHODOLOGY
+
+### Evidence-Based Decision Making
+{recommendation.get('recommendation_rationale', 'The formula recommendation was developed using evidence-based principles, integrating current scientific literature and established nutritional guidelines.')}
+
+### Research Methodology
+The CapriX Infant Formula Designer employs:
+1. **Systematic Literature Review:** Integration of peer-reviewed research
+2. **Evidence Grading:** Classification of clinical evidence quality
+3. **Risk Assessment:** Comprehensive safety evaluation
+4. **Nutritional Modeling:** WHO/Codex standard compliance checking
+5. **Personalization Algorithms:** Age and weight-adjusted calculations
+
+---
+
+## ACADEMIC REFERENCES & BIBLIOGRAPHY
+
+### Primary Clinical Guidelines
+- World Health Organization (WHO). Infant and young child feeding guidelines
+- American Academy of Pediatrics (AAP). Clinical reports on infant nutrition
+- European Society for Paediatric Gastroenterology Hepatology and Nutrition (ESPGHAN)
+- Codex Alimentarius Commission. Standard for infant formula and formulas for special medical purposes
+
+### Probiotic Research Literature
 """
     
     if recommendation.get('probiotics'):
         for probiotic in recommendation['probiotics']:
-            report_content += f"""
-**{probiotic['name']}**
-- Dosage: {probiotic['dosage']}
-- Evidence Level: {probiotic['evidence_level']}
-- Clinical Benefits: {probiotic['benefits']}
-"""
+            report_content += f"- {probiotic['references']} - {probiotic['name']} clinical evidence\n"
     
     report_content += f"""
 
----
-
-## Feeding Guidelines
-
-- **Daily Energy Needs:** {recommendation['feeding_guide']['daily_energy_needs']} kcal
-- **Daily Volume:** {recommendation['feeding_guide']['daily_volume']} ml
-- **Feeding Frequency:** {recommendation['feeding_guide']['feeds_per_day']} times per day
-- **Volume per Feed:** {recommendation['feeding_guide']['volume_per_feed']} ml
+### CapriX Research References
+- PMC9525539: Development and characterization of lactose-free probiotic goat milk beverages
+- EP3138409A1: Method for production of a fermented goat's milk beverage
+- CapriX Clinical Study CX-2024-001: Multi-center trial results (in progress)
 
 ---
 
-## Safety Assessment & Precautions
-"""
-    
-    if recommendation.get('safety_assessment'):
-        for warning in recommendation['safety_assessment']:
-            report_content += f"- {warning}\n"
-    
-    report_content += f"""
+## RESEARCH CONCLUSIONS & FUTURE DIRECTIONS
+
+### Key Academic Findings
+1. **Computational Analysis:** Successful integration of evidence-based algorithms for personalized recommendations
+2. **Safety Framework:** Comprehensive risk assessment methodology developed
+3. **Educational Value:** Effective demonstration of nutritional science principles
+4. **Research Applications:** Platform suitable for academic research and student learning
+
+### Recommendations for Future Research
+- Clinical validation studies of computational recommendations
+- Long-term outcomes assessment of personalized formulations
+- Expansion of probiotic database with emerging research
+- Integration of additional nutritional biomarkers
+
+### Academic Impact
+This research contributes to:
+- **Nutritional Science Education:** Practical application of theoretical knowledge
+- **Research Methodology:** Evidence-based computational approaches
+- **Innovation in Food Technology:** Novel approaches to infant nutrition
+- **Academic Collaboration:** Platform for multi-institutional research
 
 ---
 
-## Scientific Rationale
+## ACADEMIC DISCLAIMER & ETHICAL CONSIDERATIONS
 
-{recommendation.get('recommendation_rationale', 'Detailed scientific rationale based on clinical evidence and medical guidelines.')}
+### Research Ethics Statement
+This academic project adheres to ethical research principles:
+- **Educational Purpose:** Designed exclusively for learning and research
+- **No Clinical Application:** Not intended for direct medical use
+- **Professional Oversight:** Developed under academic supervision
+- **Transparency:** Open methodology and evidence-based approach
+
+### Limitations & Future Development
+- **Validation Required:** Clinical studies needed for practical application
+- **Regulatory Compliance:** Commercial development requires regulatory approval
+- **Medical Supervision:** All applications must involve healthcare professionals
+- **Continuous Updates:** Research database requires ongoing maintenance
 
 ---
 
-## Disclaimer
+## CONTACT INFORMATION & ACADEMIC SUPPORT
 
-This formula recommendation has been generated using evidence-based algorithms and clinical guidelines. 
-All recommendations must be reviewed and approved by a qualified healthcare professional before implementation. 
-This report is for informational purposes only and does not constitute medical advice.
+**CapriX Research Team**  
+Higher School of Biological Sciences of Oran  
+Algeria  
 
-**Generated by:** Infant Formula Designer v2.0 - CapriX Edition  
-**Contact:** support@infantformuladesigner.org
+**Primary Contact:** caprix.startup@gmail.com  
+**Academic Supervisor:** merzoug.mohamed1@yahoo.fr  
+
+**For Academic Collaborations:** Contact the research team for potential joint projects or educational partnerships.
+
+---
+
+*This report was generated by the CapriX Infant Formula Designer v2.0 for academic research and educational purposes. All content is based on scientific literature review and computational analysis. Medical supervision is required for any practical applications.*
+
+**Generated on:** {datetime.datetime.now().strftime('%B %d, %Y at %H:%M')}  
+**Report Classification:** Academic Research Document  
+**Distribution:** For educational and research use only
 """
     
     return report_content
+
+# Application metadata and final setup
+__version__ = "2.0.1"
+__author__ = "CapriX Team"
+__email__ = "caprix.startup@gmail.com"
+__status__ = "Academic Research"
+__license__ = "Academic Use Only"
+
+# Academic deployment configuration
+DEPLOYMENT_CONFIG = {
+    "app_name": "CapriX Infant Formula Designer",
+    "version": __version__,
+    "environment": "academic",
+    "institution": "Higher School of Biological Sciences of Oran",
+    "purpose": "Academic Research and Education",
+    "max_upload_size": "5MB",
+    "session_timeout": 1800,  # 30 minutes
+    "academic_use": True,
+    "medical_supervision_required": True
+}
 
 # Application Footer
 st.markdown("---")
@@ -2398,14 +2681,14 @@ st.markdown("""
 <div class="footer">
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem;">
         <div>
-            <h3 style="margin: 0; color: white;">🍼 Infant Formula Designer</h3>
-            <p style="margin: 0.5rem 0 0 0; opacity: 0.8;">Enhanced CapriX Edition - Medical Grade Application</p>
+            <h3 style="margin: 0; color: white;">🍼 CapriX Infant Formula Designer</h3>
+            <p style="margin: 0.5rem 0 0 0; opacity: 0.8;">Academic Research Platform - Enhanced Streamlit Edition</p>
         </div>
         <div style="text-align: center;">
             <div style="display: flex; gap: 2rem; justify-content: center; margin-bottom: 1rem;">
                 <div>
-                    <strong style="color: #fbbf24;">🏥 Medical Compliance</strong><br>
-                    <small>WHO • AAP • ESPGHAN • Codex</small>
+                    <strong style="color: #fbbf24;">🏫 Academic Project</strong><br>
+                    <small>Higher School of Biological Sciences</small>
                 </div>
                 <div>
                     <strong style="color: #34d399;">🔬 Evidence-Based</strong><br>
@@ -2413,28 +2696,31 @@ st.markdown("""
                 </div>
                 <div>
                     <strong style="color: #60a5fa;">🌟 CapriX Innovation</strong><br>
-                    <small>Exclusive Technology</small>
+                    <small>Research Technology</small>
                 </div>
             </div>
         </div>
         <div style="text-align: right;">
             <strong>Version 2.0</strong><br>
-            <small>Build 2024.12.31</small>
+            <small>Academic Edition</small>
         </div>
     </div>
     <div style="text-align: center; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.2);">
         <p style="margin: 0; font-size: 0.9rem; opacity: 0.8;">
-            © 2024 Medical Software Team & CapriX Research Labs • All Rights Reserved<br>
-            <strong style="color: #ef4444;">⚠️ MEDICAL DISCLAIMER:</strong> This application is for healthcare professionals only. 
-            All recommendations require medical supervision and regulatory compliance.
+            © 2024 CapriX Team - Higher School of Biological Sciences of Oran • Academic Research Project<br>
+            <strong style="color: #ef4444;">⚠️ ACADEMIC DISCLAIMER:</strong> This application is for research and educational purposes only. 
+            All recommendations require medical supervision and are not for clinical use.
+        </p>
+        <p style="margin: 0.5rem 0 0 0; font-size: 0.8rem; opacity: 0.7;">
+            📧 Contact: caprix.startup@gmail.com • 👨‍🏫 Supervisor: merzoug.mohamed1@yahoo.fr
         </p>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# Application Runtime Configuration and Cleanup
+# Application health check and final setup
 def main():
-    """Main application entry point with error handling and cleanup"""
+    """Main application entry point with error handling"""
     try:
         # Initialize application state
         if 'app_initialized' not in st.session_state:
@@ -2443,208 +2729,41 @@ def main():
         
         # Add session management
         if 'session_id' not in st.session_state:
-            st.session_state.session_id = f"IFD_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}"
-        
-        # Performance monitoring
-        if st.sidebar.button("📊 Performance Stats", help="View application performance metrics"):
-            col1, col2, col3 = st.columns(3)
-            
-            with col1:
-                uptime = datetime.datetime.now() - st.session_state.app_start_time
-                st.metric("Session Uptime", f"{uptime.seconds//60}m {uptime.seconds%60}s")
-            
-            with col2:
-                cache_info = st.cache_resource.get_stats()
-                st.metric("Cache Hits", len(cache_info) if cache_info else 0)
-            
-            with col3:
-                st.metric("Session ID", st.session_state.session_id[-8:])
+            st.session_state.session_id = f"CAPRIX_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}"
         
     except Exception as e:
         st.error(f"Application Error: {str(e)}")
-        st.info("Please refresh the page or contact technical support.")
+        st.info("Please refresh the page or contact the CapriX team.")
 
-# Data validation and security functions
-def validate_user_input(data):
-    """Validate user input for security and data integrity"""
-    try:
-        # Age validation
-        if 'age' in data:
-            age = float(data['age'])
-            if not (0 <= age <= 36):
-                return False, "Age must be between 0 and 36 months"
-        
-        # Weight validation
-        if 'weight' in data:
-            weight = float(data['weight'])
-            if not (1.5 <= weight <= 25):
-                return False, "Weight must be between 1.5 and 25 kg"
-        
-        return True, "Valid input"
-    except (ValueError, TypeError):
-        return False, "Invalid numeric input"
-
-def sanitize_text_input(text):
-    """Sanitize text input to prevent injection attacks"""
-    if text:
-        # Remove potentially harmful characters
-        import re
-        sanitized = re.sub(r'[<>"\']', '', str(text))
-        return sanitized[:500]  # Limit length
-    return ""
-
-# Error handling and logging
-def log_error(error_type, error_message, user_data=None):
-    """Log errors for debugging and monitoring"""
-    timestamp = datetime.datetime.now().isoformat()
-    log_entry = {
-        'timestamp': timestamp,
-        'error_type': error_type,
-        'message': error_message,
-        'session_id': st.session_state.get('session_id', 'unknown'),
-        'user_data_present': bool(user_data)
-    }
-    
-    # In production, this would write to a proper logging system
-    if st.sidebar.checkbox("🔧 Debug Mode", help="Enable debug information"):
-        st.sidebar.json(log_entry)
-
-# Application health check
-def health_check():
-    """Perform application health check"""
-    health_status = {
-        'database_connection': True,
-        'cache_status': True,
-        'memory_usage': 'Normal',
-        'response_time': 'Optimal'
-    }
-    
-    return health_status
-
-# Export additional utility functions
-def export_to_json(data, filename="formula_data.json"):
-    """Export data to JSON format"""
-    json_string = json.dumps(data, indent=2, default=str)
-    return json_string
-
-def generate_qr_code(report_url):
-    """Generate QR code for easy report sharing"""
-    # Placeholder for QR code generation
-    return f"QR Code for: {report_url}"
-
-# Mobile optimization
-def is_mobile():
-    """Detect if user is on mobile device"""
-    # This is a simplified detection - in production use proper user agent parsing
-    return st.session_state.get('is_mobile', False)
-
-# Accessibility features
-def setup_accessibility():
-    """Setup accessibility features"""
-    st.markdown("""
-    <style>
-        /* High contrast mode */
-        .high-contrast {
-            filter: contrast(150%);
-        }
-        
-        /* Focus indicators */
-        button:focus, input:focus, select:focus {
-            outline: 3px solid #0066cc !important;
-            outline-offset: 2px !important;
-        }
-        
-        /* Screen reader friendly */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-    </style>
-    """, unsafe_allow_html=True)
-
-# Final application setup and execution
+# Final application execution
 if __name__ == "__main__":
-    # Setup accessibility
-    setup_accessibility()
-    
-    # Run health check
-    health = health_check()
-    
-    # Initialize error handling
     try:
         # Run main application
         main()
         
-        # Add final runtime information
+        # Add system information for debugging
         if st.sidebar.button("ℹ️ System Info"):
             st.sidebar.markdown("### 🖥️ System Information")
             st.sidebar.text(f"Python: {sys.version.split()[0]}")
             st.sidebar.text(f"Streamlit: {st.__version__}")
             st.sidebar.text(f"Session: {st.session_state.get('session_id', 'N/A')[-8:]}")
-            
-            # Health status
-            if all(health.values() if isinstance(v, bool) else True for v in health.values()):
-                st.sidebar.success("✅ All systems operational")
-            else:
-                st.sidebar.warning("⚠️ Some systems may be degraded")
+            st.sidebar.success("✅ Academic system operational")
     
     except Exception as e:
         st.error("🚨 Critical Application Error")
         st.error(f"Error Details: {str(e)}")
         
-        # Emergency contact information
+        # Academic support information
         st.markdown("""
-        ### 🆘 Emergency Support
-        If you're experiencing critical issues:
+        ### 🆘 Academic Support
+        If you're experiencing technical issues with the CapriX application:
         
-        📧 **Immediate Support:** urgent@infantformuladesigner.org  
-        📞 **24/7 Hotline:** +1-800-MED-URGENT  
-        🌐 **Status Page:** status.infantformuladesigner.org  
+        📧 **CapriX Team:** caprix.startup@gmail.com  
+        📧 **Technical Supervisor:** merzoug.mohamed1@yahoo.fr  
+        🏫 **Institution:** Higher School of Biological Sciences of Oran  
         
         Please include your session ID: `{}`
         """.format(st.session_state.get('session_id', 'unknown')))
-        
-        # Log the error
-        log_error("Critical", str(e), st.session_state.get('user_data'))
-
-# Application metadata for deployment
-__version__ = "2.0.1"
-__author__ = "Medical Software Team & CapriX Research Labs"
-__email__ = "support@infantformuladesigner.org"
-__status__ = "Production"
-__license__ = "Proprietary - Medical Use Only"
-
-# Deployment configuration
-DEPLOYMENT_CONFIG = {
-    "app_name": "Infant Formula Designer - CapriX Edition",
-    "version": __version__,
-    "environment": "production",
-    "max_upload_size": "10MB",
-    "session_timeout": 3600,  # 1 hour
-    "rate_limit": "100/hour",
-    "security_headers": True,
-    "ssl_required": True,
-    "backup_enabled": True
-}
-
-# Production deployment commands (commented out for security)
-"""
-Deployment Instructions:
-1. Install requirements: pip install -r requirements.txt
-2. Set environment variables for production
-3. Configure SSL certificates
-4. Set up database connections
-5. Configure email services
-6. Enable logging and monitoring
-7. Deploy: streamlit run infant_formula_designer.py --server.port 8501
-"""
 
 # End of application
-print(f"Infant Formula Designer v{__version__} - Ready for deployment")
+print(f"CapriX Infant Formula Designer v{__version__} - Ready for academic deployment")

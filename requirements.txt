@@ -1,9 +1,7 @@
 streamlit
 pandas
 numpy
-scikit-learn
 plotly
-joblib
-biopython
-streamlit-authenticator==0.2.3
-pyyaml
+matplotlib
+datetime
+typing
